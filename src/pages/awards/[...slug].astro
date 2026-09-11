@@ -1,13 +1,21 @@
 ---
-import { getEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import AwardLayout from "../../layouts/AwardLayout.astro";
 
-const { slug } = Astro.params;
-const entry = await getEntry("hackathons", slug as string);
+export async function getStaticPaths() {
+  const entries = await getCollection("hackathons");
 
-if (!entry) {
-  return Astro.redirect("/404");
+  return entries.map((entry) => ({
+    params: { slug: entry.id.replace(/\.(md|mdx)$/, "") },
+    props: { entry },
+  }));
 }
+
+interface Props {
+  entry: CollectionEntry<"hackathons">;
+}
+
+const { entry } = Astro.props;
 ---
 
 <AwardLayout
