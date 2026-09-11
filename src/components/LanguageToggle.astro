@@ -1,0 +1,267 @@
+---
+import { Languages } from "@lucide/astro";
+
+const translations: Record<string, string> = {
+  "Hi, I'm Kada Yang": "你好，我是杨卡达",
+  "M.S. Student in Quantum Science and Engineering": "量子科学与工程硕士研究生",
+  "Shenzhen, China": "中国深圳",
+  "Researching quantum machine learning, automated quantum measurement and control, quantum compilation, system learning, and tensor networks.": "研究方向：量子机器学习、量子测控自动化；科研工作涉及量子编译、量子系统学习与张量网络。",
+  "Email": "邮箱",
+  "Kada Yang": "杨卡达",
+  "About Me": "关于我",
+  "I am an M.S. student in Quantum Science and Engineering at SUSTech, focusing on quantum machine learning and automated quantum measurement and control. My research spans quantum compilation, quantum tomography, deep learning, and tensor networks, with experience at the Hefei National Laboratory - Shenzhen Base and the Institute of Computing Technology, Chinese Academy of Sciences. I enjoy turning theoretical ideas into efficient quantum algorithms and scalable computational methods.": "我现为南方科技大学量子科学与工程硕士研究生，研究方向为量子机器学习与量子测控自动化。科研工作涉及量子编译、量子层析、深度学习和张量网络，并曾在合肥国家实验室深圳基地（深圳国际量子研究院）及中国科学院计算技术研究所开展研究。相关工作聚焦多粒子纠缠、最优量子重叠层析和基于机器学习的量子魔性预测。",
+  "I am an M.S. student in Quantum Science and Engineering at the Southern University of Science and Technology (SUSTech), where I currently rank first in my program. My research interests include quantum machine learning, automated quantum measurement and control, quantum compilation, system learning, and tensor networks.": "我现为南方科技大学量子科学与工程专业硕士研究生，专业排名第一。研究兴趣包括量子机器学习、自动化量子测量与控制、量子编译、系统学习和张量网络。",
+  "Before joining SUSTech, I earned a B.Eng. in Artificial Intelligence from Chongqing Jiaotong University, graduating first in my class. I have conducted research at the Hefei National Laboratory — Shenzhen Base and the Institute of Computing Technology, Chinese Academy of Sciences, working on quantum reservoir computing, quantum convolutional neural networks, and quantum software optimization.": "本科毕业于重庆交通大学人工智能专业，以专业第一名获得工学学士学位。我曾在合肥国家实验室深圳基地和中国科学院计算技术研究所开展科研工作，研究内容包括量子储备池计算、量子卷积神经网络和量子软件优化。",
+  "Selected Research": "代表性科研工作",
+  "Selected Honors": "代表性荣誉",
+  "Multiparticle entanglement of nuclear spins in silicon": "硅中核自旋的多粒子纠缠",
+  "Optimal quantum overlapping tomography: Theory and experiment": "最优量子重叠层析：理论与实验",
+  "Research on Machine-Learning-Based Prediction of Quantum Magic": "基于机器学习的量子魔性预测研究",
+  ", Second Author. Designed hardware-efficient quantum circuits and used bidirectional BFS compilation to reduce gate sequences and circuit depth for preparing multipartite entangled states.": "，第二作者。设计硬件高效量子线路，并采用双向 BFS 编译算法优化门序列与线路深度，以制备多体纠缠态。",
+  ", Second Author. Combined optimized overlapping tomography with a deep neural network to identify nine classes of four-qubit entanglement from partial measurement data, reaching 95.9% accuracy in simulation and 94.7% on experimental data.": "，第二作者。将最优重叠层析与深度神经网络结合，从部分测量数据中识别九类四量子比特纠缠，数值模拟准确率达 95.9%，真实实验数据准确率达 94.7%。",
+  "— Co-First Author. Developed a deep-learning model for estimating quantum-state magic from local measurements with over 99% relative accuracy, and used tensor networks to extend the approach to larger systems.": "— 共同第一作者。开发基于局域测量估计量子态魔性的深度学习模型，相对准确率超过 99%，并利用张量网络将方法扩展到更大规模系统。",
+  "National Scholarship for Undergraduates": "本科生国家奖学金",
+  "Top-Tier Academic Scholarship and Top-Tier Research Assistantship Stipend at SUSTech": "南方科技大学特等学业奖学金与特等助研奖励津贴",
+  "ICPC Hong Kong Regional Bronze Medal": "ICPC 香港区域赛铜牌",
+  "CCPC National Invitational Bronze Medal": "CCPC 全国邀请赛铜牌",
+  "National Second Prize in the Lanqiao Cup Programming Contest": "蓝桥杯程序设计竞赛全国二等奖",
+  "National Second Prize in the RoboCom Programming Contest": "RoboCom 编程竞赛全国二等奖",
+  "CSP Certification: 300 (top 4.73% nationwide)": "CSP 认证 300 分（全国前 4.73%）",
+  "Selected Research & Publications": "代表性科研与论文",
+  "Home": "首页",
+  "Latest Articles": "最新文章",
+  "Project Introduction": "项目介绍",
+  "Selected projects and ongoing work will be introduced here.": "这里将展示代表性项目和正在推进的工作。",
+  "Project details are being prepared. Check back soon.": "项目内容正在整理中，敬请期待。",
+  "Competition Awards": "竞赛获奖",
+  "Honors": "获得荣誉",
+  "This section is reserved for future honors and distinctions.": "此处预留用于展示后续荣誉与表彰。",
+  "More honors will be added here.": "获得荣誉内容将于后续补充。",
+  "Contact Me": "联系我",
+  "Recent research papers spanning quantum compilation, quantum measurement, machine learning, and tensor networks.": "近期论文涵盖量子编译、量子测量、机器学习与张量网络。",
+  "Research spanning quantum compilation, quantum measurement, machine learning, and tensor networks.": "研究涵盖量子编译、量子测量、机器学习与张量网络。",
+  "Nature Communications research on preparing and characterizing nine classes of four-qubit entanglement in a silicon nuclear-spin platform. Second Author.": "发表于《Nature Communications》的研究，在硅核自旋平台上制备并表征九类四量子比特纠缠。第二作者。",
+  "Physical Review Applied research combining optimized measurement schemes with deep learning to recognize four-qubit entanglement from partial measurements. Second Author.": "发表于《Physical Review Applied》的研究，将优化测量方案与深度学习结合，从部分测量中识别四量子比特纠缠。第二作者。",
+  "Machine-Learning-Based Prediction of Quantum Magic": "基于机器学习的量子魔性预测",
+  "Deep-learning research for predicting quantum-state magic from local measurements, with tensor-network simulation for larger quantum systems. Co-First Author.": "利用局域测量预测量子态魔性的深度学习研究，并通过张量网络模拟扩展至更大规模量子系统。共同第一作者。",
+  "View All Research": "查看全部科研成果",
+  "View All Articles": "查看全部文章",
+  "View project details": "查看科研详情",
+  "Research entries are being prepared. Check back soon.": "科研内容正在整理中，敬请期待。",
+  "Work Experience": "科研实习经历",
+  "Hefei National Laboratory - Shenzhen Base": "合肥国家实验室深圳基地（深圳国际量子研究院）",
+  "Visiting Scholar, Nuclear Spin Laboratory": "核自旋实验室访问学生",
+  "Shenzhen, Guangdong": "广东深圳",
+  "Institute of Computing Technology, Chinese Academy of Sciences": "中国科学院计算技术研究所",
+  "Visiting Scholar, Frontier Research Laboratory": "前瞻研究实验室访问学生",
+  "Haidian, Beijing": "北京海淀",
+  "Read more": "查看详情",
+  "Close": "关闭",
+  "Education": "教育背景",
+  "Southern University of Science and Technology (SUSTech)": "南方科技大学",
+  "M.S. in Quantum Science and Engineering": "量子科学与工程硕士",
+  "M.S. in Quantum Science and Engineering · GPA 3.53/4.0 (Ranked 1st)": "量子科学与工程（硕士） · GPA 3.53/4（专业第一）",
+  "Chongqing Jiaotong University": "重庆交通大学",
+  "B.Eng. in Artificial Intelligence": "人工智能工学学士",
+  "B.Eng. in Artificial Intelligence · GPA 4.17/5.0 (Ranked 1st)": "人工智能（本科） · GPA 4.17/5（专业第一）",
+  "Competitions & Awards": "竞赛与荣誉",
+  "Selected national and regional achievements in programming and technology.": "程序设计与科技创新领域的部分国家级和区域级荣誉。",
+  "ICPC Hong Kong Regional": "ICPC 香港区域赛",
+  "CCPC National Invitational": "CCPC 全国邀请赛",
+  "Lanqiao Cup Programming Contest": "蓝桥杯程序设计竞赛",
+  "RoboCom Programming Contest": "RoboCom 编程竞赛",
+  "Group Programming Ladder Tournament (Individual)": "团体程序设计天梯赛（个人）",
+  "CSP Certification": "CSP 认证",
+  "Bronze Medal": "铜牌",
+  "National Second Prize": "全国二等奖",
+  "National Third Prize": "全国三等奖",
+  "Score 300, top 4.73% nationwide": "300 分，全国前 4.73%",
+  "Latest Blog Posts": "最新文章",
+  "Research notes, technical reflections, and learning records.": "用于记录科研笔记、技术思考和学习心得。",
+  "No posts yet. Research notes will be added here in the future.": "目前还没有文章，后续将在这里更新科研笔记。",
+  "View Blog": "查看文章",
+  "Interested in quantum machine learning, quantum measurement and control, or related research? Feel free to get in touch.": "如果你对量子机器学习、量子测量与控制或相关研究感兴趣，欢迎与我联系。",
+  "Email me at 12532263@mail.sustech.edu.cn": "发送邮件至 12532263@mail.sustech.edu.cn",
+  "and I'll respond whenever I can.": "我会尽快回复。",
+  "Portfolio of": "个人主页：",
+  "Copyright © 2026 - Portfolio of": "版权所有 © 2026 - 个人主页：",
+  "Research": "科研",
+  "Experience": "经历",
+  "Contact": "联系",
+  "Research & Publications": "科研成果与论文",
+  "Selected work in quantum computing, quantum measurement, and machine learning.": "量子计算、量子测量和机器学习方向的代表性工作。",
+  "Back to Home": "返回首页",
+  "Back to Projects": "返回科研成果",
+  "View All Projects": "查看全部科研成果",
+  "All": "全部",
+  "Browse every project in one place.": "在这里浏览全部科研成果。",
+  "Quantum Research": "量子研究",
+  "Research in quantum computing, quantum measurement, and machine learning": "量子计算、量子测量与机器学习研究",
+  "Overview": "工作概述",
+  "My Contributions": "主要贡献",
+  "Methods & Topics": "方法与主题",
+  "Publication": "发表信息",
+  "Research Question": "研究问题",
+  "Platform and Method": "实验平台与方法",
+  "Nine Entanglement Families": "九类纠缠态",
+  "Key Results": "核心结果",
+  "Significance": "研究意义",
+  "Optimal QOT Framework": "最优 QOT 框架",
+  "Experimental Validation": "实验验证",
+  "View Source": "查看论文",
+  "Nature Communications, 2026. The study was accepted on 4 June 2026 and is available through the DOI link above.": "发表于《Nature Communications》，2026 年。论文于 2026 年 6 月 4 日获接收，可通过上方 DOI 链接阅读全文。",
+  "Can a silicon spin-qubit processor move beyond isolated GHZ demonstrations and systematically generate, reconstruct, and verify the full diversity of four-qubit entanglement?": "硅自旋量子比特处理器能否突破单一 GHZ 态演示，系统地生成、重构并验证完整的四量子比特纠缠类型？",
+  "The experiment uses a donor-based silicon quantum processor containing five phosphorus nuclear spins coupled through a shared electron spin. Four nuclear spins encode the target system, while native electron-mediated multi-qubit gates provide all-to-all connectivity.": "实验采用硅基施主量子处理器，由一个共享电子自旋耦合五个磷核自旋。四个核自旋用于编码目标系统，电子介导的原生多量子比特门则提供全连接能力。",
+  "We designed hardware-efficient preparation circuits with a bidirectional breadth-first search compiler, refined their parameters variationally, and reconstructed the prepared states with overlapping tomography and tensor-network learning.": "我们利用双向广度优先搜索编译器设计硬件高效制备线路，通过变分方法优化参数，并结合重叠层析与张量网络学习重构实验量子态。",
+  "Figure 1 - Silicon donor nuclear-spin processor, hardware-efficient entanglement circuit, bidirectional BFS compiler, and native gate set.": "图 1 - 硅施主核自旋处理器、硬件高效纠缠线路、双向 BFS 编译器及原生门集。",
+  "Representative states from all nine canonical four-qubit entanglement families were prepared and reconstructed. The GHZ, W, and cluster states reached fidelities of 84.2%, 83.8%, and 81.1%, respectively. Entanglement witnesses, partial-transpose negativity, and qubit-loss tests were then used to resolve genuine multipartite entanglement and robustness.": "实验制备并重构了九类典型四量子比特纠缠态。GHZ 态、W 态和簇态保真度分别达到 84.2%、83.8% 和 81.1%，随后利用纠缠见证、部分转置负性和量子比特丢失测试分析真正多体纠缠及其鲁棒性。",
+  "Figure 2 - Reconstructed density matrices for representative states spanning all nine four-qubit entanglement families.": "图 2 - 覆盖全部九类四量子比特纠缠族的代表性量子态重构密度矩阵。",
+  "Genuine four-qubit entanglement was verified across the prepared state families, together with their different responses to losing one or two qubits.": "在所制备的量子态族中验证了真正的四量子比特纠缠，并比较了它们在丢失一个或两个量子比特后的不同响应。",
+  "The GHZ state violated the Seevinck-Svetlichny bound by more than eight standard deviations, reaching 9.16 ± 0.14 against the classical bound of 8.": "GHZ 态以 9.16 ± 0.14 的实验值超过经典上界 8，Seevinck-Svetlichny 不等式违背超过八个标准差。",
+  "A second LOSR-based inequality reached 6.21 ± 0.05, exceeding its classical bound of 6 by more than four standard deviations.": "另一项基于 LOSR 的不等式测得 6.21 ± 0.05，超过经典上界 6 达四个以上标准差。",
+  "A noisy Smolin state entered a bound-entangled regime for noise probability 0.40-0.60.": "含噪 Smolin 态在噪声概率 0.40-0.60 的区间进入束缚纠缠区域。",
+  "Joint Bell-state measurement increased the residual pair concurrence from 0.08 to an average of 0.58, realizing seven-fold entanglement distillation.": "联合 Bell 态测量将剩余量子比特对的并发度从 0.08 提高到平均 0.58，实现七倍纠缠蒸馏。",
+  "Figure 3 - Experimental tests of the Seevinck-Svetlichny and LOSR-based multiparticle Bell-type inequalities.": "图 3 - Seevinck-Svetlichny 不等式及基于 LOSR 的多体 Bell 型不等式实验测试。",
+  "Figure 4 - Preparation, tomography, noise-driven bound-entanglement region, and entanglement unlocking of the Smolin state.": "图 4 - Smolin 态的制备、层析、噪声驱动束缚纠缠区域及纠缠解锁。",
+  "The work expands silicon spin systems from a narrow set of entanglement demonstrations to a programmable collection of multipartite resources, providing a foundation for quantum simulation, metrology, networking, and larger silicon-based quantum processors.": "该工作将硅自旋系统从少数纠缠态演示拓展为可编程的多体纠缠资源集合，为量子模拟、量子精密测量、量子网络及更大规模硅基量子处理器奠定基础。",
+  "Physical Review Applied 24, 044091 (2025), selected as an Editors' Suggestion. Published on 29 October 2025.": "发表于《Physical Review Applied》24, 044091 (2025)，入选编辑推荐，于 2025 年 10 月 29 日正式发表。",
+  "Physical Review Applied 24, 044091 (2025), selected as an Editors’ Suggestion. Published on 29 October 2025.": "发表于《Physical Review Applied》24, 044091 (2025)，入选编辑推荐，于 2025 年 10 月 29 日正式发表。",
+  "On this page": "本页目录",
+  "How can all target reduced density matrices be reconstructed with the fewest experimentally feasible parallel measurement settings, while retaining flexibility across system sizes and interaction topologies?": "如何使用数量最少且实验可行的并行测量设置重构全部目标约化密度矩阵，同时适应不同系统规模和相互作用拓扑？",
+  "We map quantum overlapping tomography to a minimum clique-cover problem. A binary linear program finds optimal measurement schedules, while a fast greedy iterative algorithm provides near-optimal solutions for larger systems. The same framework also supports nearest-neighbor and mixed-locality reduced density matrices.": "我们将量子重叠层析映射为最小团覆盖问题：二元线性规划求解最优测量调度，快速贪心迭代算法则为更大规模系统提供近似最优解；同一框架还支持最近邻与混合局域度约化密度矩阵。",
+  "Figure 1 - Parallel Pauli measurements recover overlapping reduced density matrices; the qubit-wise commuting matrix turns schedule design into a coverage optimization problem.": "图 1 - 并行 Pauli 测量重构相互重叠的约化密度矩阵；逐量子比特对易矩阵将测量调度转化为覆盖优化问题。",
+  "Figure 2 - Comparison with earlier QOT constructions for six to ten qubits and locality lengths from two to four.": "图 2 - 在 6 至 10 个量子比特、局域长度 2 至 4 的条件下，与已有 QOT 构造方法进行比较。",
+  "The method was tested on two complementary platforms. Four-qubit nuclear magnetic resonance experiments reconstructed two-qubit reduced density matrices and classified nine entanglement families. Noisy superconducting processors prepared four-, six-, and nine-qubit GHZ states to evaluate measurement-sample efficiency at increasing scale.": "该方法在两类互补平台上得到验证：四量子比特核磁共振实验重构二体约化密度矩阵并分类九类纠缠态；含噪超导处理器制备 4、6 和 9 量子比特 GHZ 态，用于评估不同规模下的测量采样效率。",
+  "Optimal QOT reduced the four-qubit measurement schedule from 15 observables to 9 and cut experimental time by approximately 40% relative to the original protocol.": "最优 QOT 将四量子比特测量设置从 15 个可观测量减少到 9 个，相比原始方案将实验时间缩短约 40%。",
+  "Reconstructed two-qubit reduced density matrices achieved average fidelities of approximately 99.1% for both the original and optimized schedules.": "原始与优化测量方案重构的二体约化密度矩阵平均保真度均约为 99.1%。",
+  "A deep neural network classified nine four-qubit entanglement families with 95.9% accuracy in simulation and 94.7% accuracy on experimental data, without full state tomography.": "深度神经网络无需完整量子态层析即可分类九类四量子比特纠缠态，模拟数据准确率为 95.9%，实验数据准确率为 94.7%。",
+  "For four-, six-, and nine-qubit GHZ experiments, the original QOT required 26%, 49%, and 62% more samples, respectively, to reach comparable reconstruction quality.": "在 4、6 和 9 量子比特 GHZ 实验中，为达到相当的重构质量，原始 QOT 分别需要多使用 26%、49% 和 62% 的样本。",
+  "Figure 3 - Reconstruction fidelity versus measurement count and neural-network classification across nine four-qubit entanglement families.": "图 3 - 重构保真度随测量数量的变化，以及神经网络对九类四量子比特纠缠态的分类结果。",
+  "Figure 4 - Sample-cost comparison for four-, six-, and nine-qubit GHZ-state experiments.": "图 4 - 4、6 和 9 量子比特 GHZ 态实验的采样成本比较。",
+  "The framework makes partial tomography more efficient, scalable, and adaptable to realistic quantum-hardware constraints. It supports state characterization, local-observable estimation, Hamiltonian learning, and machine-learning-assisted analysis across multiple processor technologies.": "该框架使部分层析更高效、更具可扩展性，并能适应真实量子硬件约束，可服务于状态表征、局域可观测量估计、哈密顿量学习以及跨多种处理器技术的机器学习辅助分析。",
+  "This work systematically realizes and fully characterizes nine classes of four-qubit entanglement in a silicon spin-qubit system. It verifies genuine four-partite entanglement, four-qubit nonlocality, and the unlocking of bound entanglement.": "该工作在硅自旋量子比特系统中系统实现并完整表征了九类四量子比特纠缠，并验证了真正的四体纠缠、四量子比特非定域性以及束缚纠缠的解锁。",
+  "This work maps measurement-scheme design to a minimum clique-cover optimization problem and combines binary integer programming with a greedy iterative algorithm to reduce measurement settings and sampling overhead.": "该工作将测量方案设计映射为最小团覆盖优化问题，并结合二元整数规划与贪心迭代算法，减少测量设置数量和采样开销。",
+  "This work introduces machine learning to quantum-state magic estimation. A deep-learning model learns the nonlinear relationship between local measurement features and the magic of ground states and random states.": "该工作将机器学习引入量子态魔性估计，通过深度学习模型学习局域测量特征与基态、随机态魔性之间的非线性关系。",
+  "Designed hardware-efficient quantum circuits for the native multi-qubit gate set of a silicon donor nuclear-spin platform.": "针对硅施主核自旋平台的原生多量子比特门集，设计硬件高效量子线路。",
+  "Used a bidirectional BFS compilation algorithm to optimize gate sequences and circuit depth.": "采用双向 BFS 编译算法优化量子门序列和线路深度。",
+  "Combined compilation with a partitioning strategy to provide a feasible route for scaling multipartite entanglement resources to tens of qubits.": "将编译方法与分区策略结合，为多体纠缠资源扩展至数十量子比特提供可行路径。",
+  "Combined optimal overlapping tomography with a deep neural network to learn nine classes of four-qubit entanglement from partial measurement data.": "将最优重叠层析与深度神经网络结合，从部分测量数据中学习九类四量子比特纠缠。",
+  "Enabled entanglement-family recognition without full quantum state tomography.": "无需完整量子态层析即可识别纠缠类别。",
+  "Achieved 95.9% classification accuracy on numerical simulations and 94.7% on real experimental data.": "数值模拟分类准确率达到 95.9%，真实实验数据准确率达到 94.7%。",
+  "Developed a prediction model that estimates quantum-state magic without directly evaluating complex magic measures.": "开发无需直接计算复杂魔性度量即可估计量子态魔性的预测模型。",
+  "Achieved relative accuracy above 99%.": "相对准确率超过 99%。",
+  "Used tensor networks to simulate systems of tens of qubits and demonstrated size extrapolation from small training systems to larger quantum systems without additional training.": "利用张量网络模拟数十量子比特系统，并实现从小规模训练系统到更大规模量子系统的尺寸外推，无需额外训练。",
+  "Developing quantum reservoir computing models governed by different Hamiltonians and studying their properties, with an emphasis on quantum-chaotic models and silicon nuclear-spin systems.": "开发由不同哈密顿量控制的量子储备池计算模型并研究其性质，重点关注量子混沌模型和硅核自旋系统。",
+  "Exploring the fading-memory effect near the edge of chaos to enhance nonlinear processing capabilities and support quantum machine learning on silicon-based platforms.": "研究混沌边缘附近的渐消记忆效应，以增强储备池的非线性处理能力，并探索硅基平台上的量子机器学习。",
+  "Conducting theoretical research on quantum convolutional neural networks, including parallel convolution, multi-channel structures, and residual structures using only O(log n) additional qubits.": "开展量子卷积神经网络理论研究，仅使用 O(log n) 个额外量子比特实现并行卷积、多通道结构与残差结构。",
+  "Reproduced and optimized a quantum implicit neural network based on truncated Fourier series, substantially reducing quantum-gate and trainable-parameter counts.": "复现并优化基于截断傅里叶级数的量子隐式神经网络，显著减少量子门数量和可训练参数数量。",
+  "Optimized the unitary-matrix synthesis interface, cutting the runtime of multiple algorithms and random circuits by up to 50%.": "优化酉矩阵综合接口，使多种算法和随机线路的运行时间最多缩短 50%。",
+  "Accelerated the two-qubit-gate interface used in instruction-set conversion.": "显著加速用于指令集转换的双量子比特门接口。",
+  "Shenzhen Institute for Quantum Science and Engineering": "深圳量子科学与工程研究院",
+  "GPA: 3.53/4.0 (Ranked 1st)": "GPA：3.53/4.0（排名第 1）",
+  "Top-Tier Academic Scholarship": "特等学业奖学金",
+  "Top-Tier Research Assistantship Stipend": "特等助研奖励津贴",
+  "School of Information Science and Engineering": "信息科学与工程学院",
+  "GPA: 4.17/5.0 (Ranked 1st)": "GPA：4.17/5.0（排名第 1）",
+  "Chongqing Outstanding Individual in Science and Technology Innovation": "重庆市科技创新能力提升先进个人",
+  "No projects yet. Check back soon!": "科研内容正在整理中，敬请期待。",
+  "No featured projects yet. Check out all projects below.": "科研内容正在整理中，可查看全部内容。",
+};
+
+const titleTranslations: Record<string, string> = {
+  "Kada Yang - Portfolio": "杨卡达 - 个人主页",
+  "Research - Kada Yang": "科研成果 - 杨卡达",
+  "Multiparticle entanglement of nuclear spins in silicon": "硅中核自旋的多粒子纠缠",
+  "Optimal quantum overlapping tomography: Theory and experiment": "最优量子重叠层析：理论与实验",
+  "Machine-Learning-Based Prediction of Quantum Magic": "基于机器学习的量子魔性预测",
+};
+---
+
+<button
+  id="language-toggle"
+  type="button"
+  class="btn btn-sm btn-ghost gap-1.5 bg-base-100/80 shadow-sm backdrop-blur"
+  aria-label="Switch to Chinese"
+>
+  <Languages class="size-4" />
+  <span id="language-toggle-label">中文</span>
+</button>
+
+<script is:inline define:vars={{ translations, titleTranslations }}>
+  const originalTextNodes = window.__bloomfolioOriginalTextNodes || new WeakMap();
+  window.__bloomfolioOriginalTextNodes = originalTextNodes;
+  const originalTitles = window.__bloomfolioOriginalTitles || new WeakMap();
+  window.__bloomfolioOriginalTitles = originalTitles;
+
+  function translatedDate(value) {
+    const replacements = {
+      "Mar 2025 - Present": "2025年3月 - 至今",
+      "Jul 2024 - Aug 2024": "2024年7月 - 2024年8月",
+      "Sep 2025 - Present": "2025年9月 - 至今",
+      "Sep 2021 - Jun 2025": "2021年9月 - 2025年6月",
+      "(2 mos)": "（2个月）",
+      "(3 yrs 10 mos)": "（3年10个月）",
+    };
+    return replacements[value] || value;
+  }
+
+  function switchLanguage(language) {
+    const isChinese = language === "zh";
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+
+    nodes.forEach((node) => {
+      const parent = node.parentElement;
+      if (!parent || parent.closest("script, style, #language-toggle, [data-language-managed]")) return;
+      if (!originalTextNodes.has(node)) originalTextNodes.set(node, node.nodeValue || "");
+      const original = originalTextNodes.get(node) || "";
+      const match = original.match(/^(\s*)([\s\S]*?)(\s*)$/);
+      const leading = match?.[1] || "";
+      const core = match?.[2] || original;
+      const trailing = match?.[3] || "";
+      const replacement = isChinese
+        ? (translations[core] || translatedDate(core))
+        : core;
+      node.nodeValue = `${leading}${replacement}${trailing}`;
+    });
+
+    document.querySelectorAll("[data-tip]").forEach((element) => {
+      if (!originalTitles.has(element)) {
+        originalTitles.set(element, element.getAttribute("data-tip") || "");
+      }
+      const original = originalTitles.get(element) || "";
+      element.setAttribute("data-tip", isChinese ? (translations[original] || original) : original);
+    });
+
+    const button = document.getElementById("language-toggle");
+    const label = document.getElementById("language-toggle-label");
+    if (label) label.textContent = isChinese ? "EN" : "中文";
+    if (button) button.setAttribute("aria-label", isChinese ? "Switch to English" : "切换为中文");
+    document.documentElement.lang = isChinese ? "zh-CN" : "en";
+    const originalTitle = document.title in titleTranslations
+      ? document.title
+      : Object.entries(titleTranslations).find(([, zh]) => zh === document.title)?.[0] || document.title;
+    document.title = isChinese ? (titleTranslations[originalTitle] || originalTitle) : originalTitle;
+    localStorage.setItem("portfolio-language", language);
+    document.dispatchEvent(
+      new CustomEvent("portfolio:language-change", { detail: { language } }),
+    );
+  }
+
+  function setupLanguageToggle() {
+    const button = document.getElementById("language-toggle");
+    if (!button) return;
+    if (!button.dataset.languageBound) {
+      button.dataset.languageBound = "true";
+      button.addEventListener("click", () => {
+        const next = document.documentElement.lang.startsWith("zh") ? "en" : "zh";
+        switchLanguage(next);
+      });
+    }
+    switchLanguage(localStorage.getItem("portfolio-language") === "zh" ? "zh" : "en");
+  }
+
+  setupLanguageToggle();
+  document.addEventListener("astro:page-load", setupLanguageToggle);
+</script>

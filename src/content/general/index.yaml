@@ -1,0 +1,29 @@
+projectsLayout: tabs-horizontal
+showContentSidebar: true
+contentSidebarPosition: right
+enableThemeSelector: true
+extraLinksEnabled: true
+extraLinks:
+  - link: /#projects
+    icon: BookOpen
+    label: Research
+    displayOn: both
+  - link: /#work
+    icon: Briefcase
+    label: Experience
+    displayOn: both
+  - link: /#education
+    icon: GraduationCap
+    label: Education
+    displayOn: both
+  - link: /#contact
+    icon: Mail
+    label: Contact
+    displayOn: both
+showAboutSection: true
+showProjectsSection: true
+showBlogSection: true
+showWorkSection: true
+showEducationSection: true
+showHackathonsSection: true
+showContactSection: true

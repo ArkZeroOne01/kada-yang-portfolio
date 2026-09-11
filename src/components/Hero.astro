@@ -1,0 +1,191 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { getIcon } from "../utils/iconMapper";
+import { parseInlineLinks } from "../utils/parseInlineLinks";
+
+interface Props {
+  hero: {
+    name: string;
+    title: string;
+    description: string;
+    avatar: ImageMetadata | string;
+    location?: string;
+    socialLinks: Array<{
+      url: string;
+      icon: string;
+      label: string;
+    }>;
+  };
+}
+
+const { hero } = Astro.props;
+const heroGreetingEn = `Hi, I'm ${hero.name}`;
+const heroGreetingZh = hero.name === "Kada Yang" ? "你好，我是杨卡达" : `你好，我是${hero.name}`;
+---
+
+<section id="home" class="hero min-h-screen">
+  <div class="hero-content flex-col lg:flex-row-reverse max-w-7xl">
+    <div class="hover-3d">
+      <!-- content -->
+      <figure class="max-w-100 w-48 lg:w-64 mask mask-squircle">
+        {
+          typeof hero.avatar === "string" ? (
+            <img src={hero.avatar} alt={hero.name} />
+          ) : (
+            <Image src={hero.avatar} alt={hero.name} />
+          )
+        }
+      </figure>
+      <!-- 8 empty divs needed for the 3D effect -->
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="max-w-2xl text-center lg:text-left">
+      <h1
+        class="text-4xl lg:text-5xl font-bold mb-4"
+        aria-label={heroGreetingEn}
+        data-language-managed
+      >
+        <span
+          id="hero-typing-text"
+          aria-hidden="true"
+          data-greeting-en={heroGreetingEn}
+          data-greeting-zh={heroGreetingZh}
+        >{heroGreetingEn}</span>
+        <span class="typing-caret" aria-hidden="true"></span>
+      </h1>
+      <p class="skeleton skeleton-text text-xl text-base-content/80 mb-2" set:html={parseInlineLinks(hero.title)} />
+      {
+        hero.location && (
+          <p class="text-base-content/60 mb-4">{hero.location}</p>
+        )
+      }
+      <p class="text-lg leading-relaxed mb-6" set:html={parseInlineLinks(hero.description)} />
+      <div
+        class="grid grid-cols-4 gap-2 justify-items-center lg:flex lg:gap-4 lg:justify-start"
+      >
+        {
+          hero.socialLinks.map((link) => {
+            const IconComponent = getIcon(link.icon as any);
+            return (
+              <div class="tooltip tooltip-top" data-tip={link.label}>
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-circle btn-primary lg:btn-ghost"
+                  aria-label={link.label}
+                >
+                  <IconComponent class="size-6" />
+                </a>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .typing-caret {
+    display: inline-block;
+    width: 0.075em;
+    height: 0.92em;
+    margin-left: 0.12em;
+    translate: 0 0.08em;
+    border-radius: 999px;
+    background: currentColor;
+    animation: typing-caret-blink 0.82s steps(1, end) infinite;
+  }
+
+  @keyframes typing-caret-blink {
+    0%,
+    46% {
+      opacity: 1;
+    }
+
+    47%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .typing-caret {
+      animation: none;
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  function setupHeroTyping() {
+    window.__bloomfolioHeroTypingCleanup?.();
+
+    const textElement = document.getElementById("hero-typing-text");
+    const heading = textElement?.closest("h1");
+    if (!textElement || !heading) return;
+
+    let timer: number | undefined;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const typeGreeting = (language: string) => {
+      if (timer !== undefined) window.clearTimeout(timer);
+
+      const isChinese = language.startsWith("zh");
+      const greeting = isChinese
+        ? textElement.dataset.greetingZh || ""
+        : textElement.dataset.greetingEn || "";
+
+      heading.setAttribute("aria-label", greeting);
+
+      if (reduceMotion.matches) {
+        textElement.textContent = greeting;
+        return;
+      }
+
+      const characters = Array.from(greeting);
+      const baseDelay = isChinese ? 125 : 72;
+      let characterIndex = 0;
+      textElement.textContent = "";
+
+      const typeNextCharacter = () => {
+        textElement.textContent = characters.slice(0, characterIndex + 1).join("");
+        characterIndex += 1;
+
+        if (characterIndex < characters.length) {
+          const naturalVariation = Math.round(Math.random() * 34);
+          timer = window.setTimeout(typeNextCharacter, baseDelay + naturalVariation);
+        }
+      };
+
+      timer = window.setTimeout(typeNextCharacter, 260);
+    };
+
+    const onLanguageChange = (event: Event) => {
+      const language = (event as CustomEvent<{ language?: string }>).detail?.language;
+      typeGreeting(language || document.documentElement.lang);
+    };
+
+    document.addEventListener("portfolio:language-change", onLanguageChange);
+    typeGreeting(document.documentElement.lang);
+
+    window.__bloomfolioHeroTypingCleanup = () => {
+      if (timer !== undefined) window.clearTimeout(timer);
+      document.removeEventListener("portfolio:language-change", onLanguageChange);
+      window.__bloomfolioHeroTypingCleanup = null;
+    };
+  }
+
+  setupHeroTyping();
+  document.addEventListener("astro:page-load", setupHeroTyping);
+  document.addEventListener("astro:before-swap", () => window.__bloomfolioHeroTypingCleanup?.());
+</script>

@@ -1,0 +1,149 @@
+---
+import { getCollection } from "astro:content";
+import { Trophy, FileCheck, FileClock, ChevronRight } from "@lucide/astro";
+
+const awardEntries = await getCollection("hackathons");
+const tierOrder = { international: 0, national: 1, provincial: 2, school: 3 };
+const sortedAwards = awardEntries.sort((a, b) => {
+  const tierDifference = tierOrder[a.data.tier] - tierOrder[b.data.tier];
+  if (tierDifference !== 0) return tierDifference;
+  if (a.data.awardOrder !== b.data.awardOrder) {
+    return a.data.awardOrder - b.data.awardOrder;
+  }
+  return a.data.sortOrder - b.data.sortOrder;
+});
+---
+
+<section id="competition-awards" class="px-4 py-20">
+  <div class="mx-auto max-w-4xl">
+    <div class="mb-12 text-center">
+      <h2 class="mb-4 text-4xl font-bold">Competition Awards</h2>
+      <p class="text-lg text-base-content/70">
+        <span class="lang-en">International, national, provincial and university-level achievements.</span>
+        <span class="lang-zh">按国际级、国家级、省部级与校级依次展示的竞赛成果。</span>
+      </p>
+    </div>
+
+    <ul class="timeline timeline-vertical timeline-snap-icon">
+      {
+        sortedAwards.map((entry, index) => (
+          <li>
+            {index > 0 && <hr class="bg-primary/45" />}
+            <div class="timeline-middle">
+              <div class={`award-marker award-marker--${entry.data.tier}`}>
+                <Trophy class="size-4" />
+              </div>
+            </div>
+            <div
+              class={`timeline-${index % 2 === 0 ? "start" : "end"} w-full max-w-sm pb-8 ${index % 2 === 0 ? "pe-4 text-end" : "ps-4 text-start"}`}
+            >
+              <a
+                href={`/awards/${entry.id}`}
+                class={`award-card award-card--${entry.data.tier} group card bg-base-100 text-start shadow-xl`}
+                aria-label={`Open certificate for ${entry.data.title}`}
+              >
+                <div class="card-body relative p-5 sm:p-6">
+                  <div class="absolute end-4 top-4 flex items-center gap-2 text-base-content/45">
+                    {entry.data.certificate ? (
+                      <FileCheck class="size-4" aria-label="Certificate available" />
+                    ) : (
+                      <FileClock class="size-4" aria-label="Certificate pending" />
+                    )}
+                    <ChevronRight class="size-4 transition-transform group-hover:translate-x-1" />
+                  </div>
+                  <h3 class="pe-14 text-lg font-bold leading-snug">
+                    <span class="lang-en">{entry.data.title}</span>
+                    <span class="lang-zh">{entry.data.titleZh}</span>
+                  </h3>
+                  <p class={`award-text award-text--${entry.data.tier} mt-2 text-base font-extrabold`}>
+                    <span class="lang-en">{entry.data.award}</span>
+                    <span class="lang-zh">{entry.data.awardZh}</span>
+                  </p>
+                </div>
+              </a>
+            </div>
+            {index < sortedAwards.length - 1 && <hr class="bg-primary/45" />}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .award-marker {
+    display: grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    place-items: center;
+    border: 1px solid color-mix(in oklab, currentColor 35%, transparent);
+    border-radius: 9999px;
+    background: var(--color-base-100);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.14);
+  }
+  .award-marker--international { color: #9b5de5; }
+  .award-marker--national { color: #d69e16; }
+  .award-marker--provincial { color: #8493a8; }
+  .award-marker--school { color: #ad6f3b; }
+
+  .award-card {
+    --award-accent: #d4a017;
+    overflow: hidden;
+    border: 1px solid color-mix(in oklab, var(--award-accent) 34%, transparent);
+    border-inline-start-width: 4px;
+    border-inline-start-color: var(--award-accent);
+    text-decoration: none;
+    transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+  }
+  .award-card:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in oklab, var(--award-accent) 72%, transparent);
+    box-shadow: 0 24px 55px color-mix(in oklab, var(--award-accent) 20%, transparent);
+  }
+  .award-card--international { --award-accent: #a855f7; }
+  .award-card--national { --award-accent: #d4a017; }
+  .award-card--provincial { --award-accent: #9aa7b8; }
+  .award-card--school { --award-accent: #b87333; }
+
+  .award-text--international {
+    width: fit-content;
+    background: linear-gradient(90deg, #ff477e, #ffb703, #19b5fe, #9b5de5, #ff477e);
+    background-size: 240% auto;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation: international-shimmer 5s linear infinite;
+  }
+  .award-text--national {
+    color: #c69214;
+    text-shadow: 0 1px 15px rgb(245 190 45 / 0.24);
+  }
+  .award-text--provincial {
+    color: #7e8da2;
+    text-shadow: 0 1px 12px rgb(183 197 216 / 0.22);
+  }
+  .award-text--school { color: #a76633; }
+  :global(html[data-theme="dark"]) .award-text--national { color: #f2c94c; }
+  :global(html[data-theme="dark"]) .award-text--provincial { color: #c3cfdf; }
+  :global(html[data-theme="dark"]) .award-text--school { color: #d59862; }
+
+  @keyframes international-shimmer { to { background-position: 240% center; } }
+
+  @media (max-width: 639px) {
+    .timeline.timeline-vertical > li { grid-template-columns: 2.25rem minmax(0, 1fr); }
+    .timeline.timeline-vertical > li > .timeline-middle { grid-column: 1; }
+    .timeline.timeline-vertical > li > .timeline-start,
+    .timeline.timeline-vertical > li > .timeline-end {
+      grid-column: 2;
+      grid-row: 1;
+      max-width: none;
+      padding-inline: 0.75rem 0;
+      text-align: start;
+    }
+    .timeline.timeline-vertical > li > hr { grid-column: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .award-text--international { animation: none; }
+  }
+</style>

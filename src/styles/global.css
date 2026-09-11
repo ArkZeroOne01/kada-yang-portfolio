@@ -1,0 +1,255 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+/* 
+If you want use the ThemeToggle component,
+and chose the themes to light and dard,
+move the --default and --prefersdark to the themes you want
+and then update the the darkThemeName and lightThemeName
+variables on ThemeToggle component with the new theme names.
+The name should be the same as the theme name below.
+*/
+@plugin "daisyui" {
+  themes:
+    light --default,
+    dark --prefersdark;
+}
+
+@plugin "daisyui/theme" {
+  name: "bloom";
+  default: false;
+  prefersdark: false;
+  color-scheme: light;
+  --color-base-100: oklch(91.637% 0.034 90.515);
+  --color-base-200: oklch(88.272% 0.049 91.774);
+  --color-base-300: oklch(84.133% 0.065 90.856);
+  --color-base-content: oklch(41% 0.112 45.904);
+  --color-primary: oklch(80% 0.114 19.571);
+  --color-primary-content: oklch(39% 0.141 25.723);
+  --color-secondary: oklch(92% 0.084 155.995);
+  --color-secondary-content: oklch(44% 0.119 151.328);
+  --color-accent: oklch(68% 0.162 75.834);
+  --color-accent-content: oklch(41% 0.112 45.904);
+  --color-neutral: oklch(44% 0.011 73.639);
+  --color-neutral-content: oklch(86% 0.005 56.366);
+  --color-info: oklch(58% 0.158 241.966);
+  --color-info-content: oklch(96% 0.059 95.617);
+  --color-success: oklch(51% 0.096 186.391);
+  --color-success-content: oklch(96% 0.059 95.617);
+  --color-warning: oklch(64% 0.222 41.116);
+  --color-warning-content: oklch(96% 0.059 95.617);
+  --color-error: oklch(70% 0.191 22.216);
+  --color-error-content: oklch(40% 0.123 38.172);
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+body > main,
+body > article {
+  position: relative;
+  z-index: 1;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overscroll-behavior-y: none;
+}
+
+body {
+  overflow-x: clip;
+}
+
+.lang-zh {
+  display: none;
+}
+
+html[lang^="zh"] .lang-en {
+  display: none;
+}
+
+html[lang^="zh"] .lang-zh {
+  display: inline;
+}
+
+/* Background components must never take up document flow space. */
+.light-background,
+.meteor-background,
+.bloom-background {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100dvh !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+
+#home {
+  min-height: 100svh;
+}
+
+html[data-theme="light"] body {
+  background-color: #f4f8fd;
+}
+
+html[data-theme="light"] section.bg-base-200,
+html[data-theme="light"] section.bg-base-300 {
+  border-block: 1px solid rgb(79 110 159 / 0.07);
+  background:
+    linear-gradient(120deg, rgb(255 255 255 / 0.68), rgb(239 246 255 / 0.52) 55%, rgb(248 246 255 / 0.58));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.84),
+    inset 0 -1px 0 rgb(120 150 192 / 0.04);
+  backdrop-filter: blur(11px) saturate(1.1);
+}
+
+html[data-theme="light"] .card.bg-base-100,
+html[data-theme="light"] .card.bg-base-200,
+html[data-theme="light"] .list.bg-base-100 {
+  border: 1px solid rgb(67 99 147 / 0.13);
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 0.9), rgb(246 250 255 / 0.72) 58%, rgb(248 246 255 / 0.7));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.96),
+    0 24px 70px rgb(52 84 133 / 0.12),
+    0 3px 12px rgb(77 111 160 / 0.06);
+  backdrop-filter: blur(20px) saturate(1.14);
+}
+
+html[data-theme="light"] .hero .hero-content {
+  width: min(92vw, 72rem);
+  padding: clamp(1.6rem, 4vw, 3.5rem);
+  border: 1px solid rgb(255 255 255 / 0.82);
+  border-radius: clamp(2rem, 4vw, 3.5rem);
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 0.46), rgb(244 249 255 / 0.22) 54%, rgb(243 240 255 / 0.25));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.92),
+    0 40px 110px rgb(56 91 145 / 0.12),
+    0 8px 30px rgb(105 130 171 / 0.07);
+  backdrop-filter: blur(9px) saturate(1.08);
+}
+
+html[data-theme="light"] .hero h1,
+html[data-theme="light"] .hero p {
+  text-shadow: 0 2px 26px rgb(255 255 255 / 0.96);
+}
+
+html[data-theme="light"] #hero-typing-text {
+  background: linear-gradient(100deg, #172844 4%, #285a96 52%, #5c55a5 96%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+html[data-theme="light"] .hero figure {
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.95),
+    0 0 0 7px rgb(255 255 255 / 0.34),
+    0 30px 75px rgb(49 90 151 / 0.2);
+}
+
+html[data-theme="light"] .hero .btn-primary {
+  border-color: rgb(68 112 177 / 0.18);
+  background: linear-gradient(145deg, rgb(255 255 255 / 0.72), rgb(225 238 255 / 0.64));
+  color: #315d96;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.92),
+    0 10px 26px rgb(48 91 151 / 0.12);
+}
+
+html[data-theme="light"] .hero .btn-primary:hover {
+  border-color: rgb(68 112 177 / 0.3);
+  background: linear-gradient(145deg, rgb(255 255 255 / 0.9), rgb(211 230 255 / 0.78));
+  transform: translateY(-2px);
+}
+
+html[data-theme="light"] .portfolio-island {
+  border-color: rgb(54 83 127 / 0.14);
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 0.82), rgb(239 246 255 / 0.71), rgb(248 246 255 / 0.72));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.98),
+    0 18px 55px rgb(54 85 132 / 0.16);
+}
+
+html[data-theme="dark"] body {
+  background-color: #030716;
+}
+
+html[data-theme="dark"] section.bg-base-200,
+html[data-theme="dark"] section.bg-base-300 {
+  background-color: rgb(4 8 24 / 0.52);
+  backdrop-filter: blur(2px);
+}
+
+html[data-theme="dark"] .card.bg-base-100,
+html[data-theme="dark"] .card.bg-base-200,
+html[data-theme="dark"] .list.bg-base-100 {
+  border: 1px solid rgb(151 202 255 / 0.15);
+  background-color: rgb(9 15 37 / 0.79);
+  box-shadow: 0 18px 50px rgb(0 0 0 / 0.3);
+  backdrop-filter: blur(14px) saturate(1.15);
+}
+
+html[data-theme="dark"] .hero h1,
+html[data-theme="dark"] .hero p {
+  text-shadow: 0 3px 22px rgb(0 0 0 / 0.78);
+}
+
+html[data-theme="dark"] .hero figure {
+  box-shadow:
+    0 0 0 1px rgb(180 222 255 / 0.28),
+    0 22px 80px rgb(72 95 255 / 0.32);
+}
+
+html[data-theme="bloom"] body {
+  background-color: #f3e7c5;
+}
+
+html[data-theme="bloom"] section.bg-base-200,
+html[data-theme="bloom"] section.bg-base-300 {
+  background-color: rgb(255 248 218 / 0.43);
+  backdrop-filter: blur(2px);
+}
+
+html[data-theme="bloom"] .card.bg-base-100,
+html[data-theme="bloom"] .card.bg-base-200,
+html[data-theme="bloom"] .list.bg-base-100 {
+  border: 1px solid rgb(111 79 35 / 0.22);
+  background-color: rgb(255 249 224 / 0.82);
+  box-shadow: 0 18px 50px rgb(96 62 21 / 0.16);
+  backdrop-filter: blur(13px) saturate(1.08);
+}
+
+html[data-theme="bloom"] .hero h1,
+html[data-theme="bloom"] .hero p {
+  text-shadow:
+    0 1px 1px rgb(255 255 240 / 0.95),
+    0 3px 16px rgb(255 248 214 / 0.72);
+}
+
+html[data-theme="bloom"] .hero figure {
+  box-shadow:
+    0 0 0 2px rgb(255 250 221 / 0.72),
+    0 24px 70px rgb(142 91 34 / 0.26);
+}
+
+@media (max-width: 640px) {
+  html[data-theme="light"] .hero .hero-content {
+    width: min(94vw, 36rem);
+    padding: 1.45rem 1.1rem;
+    border-radius: 2rem;
+    backdrop-filter: blur(7px) saturate(1.06);
+  }
+
+  html[data-theme="dark"] .meteor-scene {
+    background-position: 64% center;
+  }
+}

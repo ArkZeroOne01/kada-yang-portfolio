@@ -1,0 +1,24 @@
+---
+import { getEntry } from "astro:content";
+import AwardLayout from "../../layouts/AwardLayout.astro";
+
+const { slug } = Astro.params;
+const entry = await getEntry("hackathons", slug as string);
+
+if (!entry) {
+  return Astro.redirect("/404");
+}
+---
+
+<AwardLayout
+  title={entry.data.title}
+  titleZh={entry.data.titleZh}
+  award={entry.data.award}
+  awardZh={entry.data.awardZh}
+  tier={entry.data.tier}
+  startDate={entry.data.startDate}
+  certificate={entry.data.certificate}
+  rotateCertificate={entry.data.rotateCertificate}
+  description={entry.data.description}
+  descriptionZh={entry.data.descriptionZh}
+/>

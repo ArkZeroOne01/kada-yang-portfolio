@@ -1,0 +1,255 @@
+---
+import Layout from "./Layout.astro";
+import { Image } from "astro:assets";
+import SkillBadge from "../components/SkillBadge.astro";
+import { ExternalLink } from "@lucide/astro";
+import ContentSidebar from "../components/ContentSidebar.astro";
+import type { MarkdownHeading } from "astro";
+import type { ResolvedContentSidebar } from "../utils/contentSidebar";
+
+interface Props {
+  title: string;
+  description: string;
+  startDate?: Date;
+  endDate?: Date;
+  image?: any;
+  skills: string[];
+  demoLink?: string;
+  sourceLink?: string;
+  headings: MarkdownHeading[];
+  contentSidebar: ResolvedContentSidebar;
+}
+
+const {
+  title,
+  description,
+  startDate,
+  endDate,
+  image,
+  skills,
+  demoLink,
+  sourceLink,
+  headings,
+  contentSidebar,
+} = Astro.props;
+const outlineHeadings = headings.filter(
+  (heading) => heading.depth >= 1 && heading.depth <= 3
+);
+const hasContentSidebar = contentSidebar.show && outlineHeadings.length > 0;
+
+function formatPeriod(startDate?: Date, endDate?: Date) {
+  if (!startDate) return null;
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    year: "numeric",
+  };
+  const start = startDate.toLocaleDateString("en-US", options);
+  const end = endDate
+    ? endDate.toLocaleDateString("en-US", options)
+    : "Present";
+  return `${start} - ${end}`;
+}
+
+// Calculate project duration
+function calculateDuration(startDate?: Date, endDate?: Date) {
+  if (!startDate) return null;
+  const end = endDate || new Date();
+  const months =
+    (end.getFullYear() - startDate.getFullYear()) * 12 +
+    (end.getMonth() - startDate.getMonth());
+
+  if (months < 1) return "Less than a month";
+  if (months === 1) return "1 month";
+  if (months < 12) return `${months} months`;
+
+  const years = Math.floor(months / 12);
+  const remainingMonths = months % 12;
+
+  if (remainingMonths === 0) return years === 1 ? "1 year" : `${years} years`;
+  return `${years} year${years > 1 ? "s" : ""}, ${remainingMonths} month${remainingMonths > 1 ? "s" : ""}`;
+}
+---
+
+<Layout title={title} description={description}>
+  <article class="mx-auto max-w-7xl px-4 py-20">
+    <div class="mx-auto max-w-4xl">
+      <!-- Back button -->
+      <div class="mb-8">
+        <a href="/projects" class="btn btn-ghost btn-sm">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m15 18-6-6 6-6"></path>
+        </svg>
+          Back to Projects
+        </a>
+      </div>
+
+      <!-- Featured Image -->
+      <!-- TODO: Future Enhancement - Support multiple images/project gallery -->
+      {
+        image && (
+          <figure class="mb-8 overflow-hidden rounded-2xl">
+          <Image
+            src={image}
+            alt={title}
+            class="w-full aspect-video object-contain bg-white p-4 sm:p-6"
+          />
+          </figure>
+        )
+      }
+
+      <!-- Project Header -->
+      <header class="mb-8">
+        <h1 class="mb-4 text-4xl font-bold sm:text-5xl">{title}</h1>
+        <p class="mb-6 text-lg text-base-content/70 sm:text-xl">{description}</p>
+
+        {startDate && (
+          <div
+            class="mb-6 flex flex-wrap items-center gap-4 text-sm text-base-content/60"
+          >
+            <span class="font-semibold">{formatPeriod(startDate, endDate)}</span>
+            <span>•</span>
+            <span>{calculateDuration(startDate, endDate)}</span>
+            {!endDate && (
+              <>
+                <span>•</span>
+                <span class="badge badge-success badge-sm">Ongoing</span>
+              </>
+            )}
+          </div>
+        )}
+
+        <!-- Prominent Action Buttons -->
+        {
+          (demoLink || sourceLink) && (
+            <div class="mb-6 flex flex-wrap gap-3">
+            {demoLink && (
+              <a
+                href={demoLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-primary gap-2"
+              >
+                <ExternalLink class="size-5" />
+                Live Demo
+              </a>
+            )}
+            {sourceLink && (
+              <a
+                href={sourceLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-soft gap-2"
+              >
+                <ExternalLink class="size-5" />
+                View Source
+              </a>
+            )}
+            </div>
+          )
+        }
+      </header>
+
+      <!-- Tech Stack Showcase -->
+      {
+        skills && skills.length > 0 && (
+          <div class="card mb-8 bg-base-200">
+          <div class="card-body">
+            <h2 class="card-title text-lg mb-3">Methods & Topics</h2>
+            <div class="flex flex-wrap gap-2">
+              {skills.map((skill) => (
+                <SkillBadge skill={skill} />
+              ))}
+            </div>
+          </div>
+          </div>
+        )
+      }
+
+      <div class="divider"></div>
+    </div>
+
+    <div
+      class:list={[
+        "article-body-shell",
+        {
+          "article-body-shell--with-sidebar": hasContentSidebar,
+          "article-body-shell--left": hasContentSidebar && contentSidebar.position === "left",
+          "article-body-shell--right": hasContentSidebar && contentSidebar.position === "right",
+        },
+      ]}
+    >
+      {hasContentSidebar && (
+        <div class="article-outline-column">
+          <ContentSidebar
+            headings={outlineHeadings}
+            position={contentSidebar.position}
+          />
+        </div>
+      )}
+
+      <div class="article-main min-w-0">
+        <div class="article-prose prose prose-lg max-w-none">
+          <slot />
+        </div>
+
+        <div class="divider mt-12"></div>
+
+        <div class="mt-8 text-center">
+          <a href="/projects" class="btn btn-primary"> View All Projects </a>
+        </div>
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .article-body-shell {
+    margin-inline: auto;
+    max-width: 56rem;
+  }
+
+  .article-body-shell--with-sidebar {
+    display: grid;
+    grid-template-areas: "outline" "content";
+    gap: 2rem;
+  }
+
+  .article-outline-column {
+    grid-area: outline;
+    min-width: 0;
+  }
+
+  .article-main {
+    grid-area: content;
+  }
+
+  :global(.article-prose :where(h1, h2)) {
+    scroll-margin-top: 6rem;
+  }
+
+  @media (min-width: 64rem) {
+    .article-body-shell--with-sidebar {
+      gap: 3rem;
+    }
+
+    .article-body-shell--right {
+      grid-template-areas: "content outline";
+      grid-template-columns: minmax(0, 1fr) 16rem;
+    }
+
+    .article-body-shell--left {
+      grid-template-areas: "outline content";
+      grid-template-columns: 16rem minmax(0, 1fr);
+    }
+  }
+</style>

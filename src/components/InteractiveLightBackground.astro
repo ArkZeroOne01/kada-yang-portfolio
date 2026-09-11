@@ -1,0 +1,391 @@
+<div class="light-background" aria-hidden="true">
+  <div class="light-foundation"></div>
+  <div class="light-spectrum"></div>
+  <div class="light-ribbon light-ribbon-one"></div>
+  <div class="light-ribbon light-ribbon-two"></div>
+  <div class="light-orbit light-orbit-one"></div>
+  <div class="light-orbit light-orbit-two"></div>
+  <div class="light-pane light-pane-one"></div>
+  <div class="light-pane light-pane-two"></div>
+  <div class="light-grid"></div>
+  <canvas id="light-geometry-canvas"></canvas>
+  <div class="light-pointer-glow"></div>
+  <div class="light-finish"></div>
+</div>
+
+<style>
+  .light-background {
+    --light-x: 0px;
+    --light-y: 0px;
+    --pointer-x: 50%;
+    --pointer-y: 50%;
+    z-index: 0;
+    opacity: 0;
+    overflow: hidden;
+    background: #f5f8fd;
+    transition: opacity 420ms ease;
+  }
+
+  :global(html[data-theme="light"]) .light-background { opacity: 1; }
+
+  .light-foundation,
+  .light-spectrum,
+  .light-grid,
+  .light-pointer-glow,
+  .light-finish,
+  #light-geometry-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .light-foundation {
+    background:
+      radial-gradient(ellipse at 8% 4%, rgb(255 255 255 / 0.98) 0 18%, transparent 48%),
+      radial-gradient(ellipse at 93% 13%, rgb(191 223 255 / 0.72), transparent 39%),
+      radial-gradient(ellipse at 73% 87%, rgb(225 216 255 / 0.55), transparent 42%),
+      radial-gradient(ellipse at 4% 85%, rgb(190 240 234 / 0.5), transparent 36%),
+      linear-gradient(142deg, #ffffff 0%, #edf5ff 39%, #f7f5ff 69%, #f5fbff 100%);
+  }
+
+  .light-spectrum {
+    inset: -28%;
+    width: 156%;
+    height: 156%;
+    opacity: 0.44;
+    background: conic-gradient(
+      from 218deg at 59% 48%,
+      transparent 0deg,
+      rgb(74 156 255 / 0.14) 44deg,
+      rgb(106 228 215 / 0.12) 84deg,
+      transparent 133deg,
+      rgb(150 118 255 / 0.12) 212deg,
+      transparent 278deg
+    );
+    filter: blur(52px) saturate(1.2);
+    transform: translate3d(calc(var(--light-x) * -0.22), calc(var(--light-y) * -0.22), 0) rotate(-5deg);
+    transition: transform 900ms cubic-bezier(0.2, 0.75, 0.25, 1);
+  }
+
+  .light-ribbon {
+    position: absolute;
+    left: -16vw;
+    width: 82vw;
+    height: clamp(110px, 14vw, 220px);
+    border: 1px solid rgb(255 255 255 / 0.72);
+    border-radius: 999px;
+    filter: blur(0.2px);
+    opacity: 0.66;
+    will-change: transform;
+  }
+
+  .light-ribbon-one {
+    top: 4%;
+    background: linear-gradient(90deg, transparent 5%, rgb(255 255 255 / 0.78) 32%, rgb(136 201 255 / 0.22) 68%, transparent 96%);
+    box-shadow: 0 18px 70px rgb(83 145 220 / 0.08);
+    transform: translate3d(calc(var(--light-x) * 0.28), calc(var(--light-y) * 0.2), 0) rotate(-17deg);
+  }
+
+  .light-ribbon-two {
+    right: -28vw;
+    bottom: 2%;
+    left: auto;
+    background: linear-gradient(90deg, transparent, rgb(167 233 226 / 0.2) 35%, rgb(208 193 255 / 0.26) 72%, transparent);
+    box-shadow: 0 18px 80px rgb(116 92 205 / 0.07);
+    transform: translate3d(calc(var(--light-x) * -0.2), calc(var(--light-y) * -0.25), 0) rotate(-14deg);
+  }
+
+  .light-orbit {
+    position: absolute;
+    border: 1px solid rgb(75 116 171 / 0.13);
+    border-radius: 50%;
+    box-shadow: inset 0 0 34px rgb(255 255 255 / 0.46);
+    transition: transform 850ms cubic-bezier(0.2, 0.75, 0.25, 1);
+  }
+
+  .light-orbit-one {
+    top: -19%;
+    right: -8%;
+    width: min(54vw, 760px);
+    aspect-ratio: 1.5;
+    transform: translate3d(calc(var(--light-x) * -0.5), calc(var(--light-y) * -0.42), 0) rotate(18deg);
+  }
+
+  .light-orbit-two {
+    bottom: -16%;
+    left: -10%;
+    width: min(48vw, 660px);
+    aspect-ratio: 1.45;
+    border-color: rgb(75 173 160 / 0.12);
+    transform: translate3d(calc(var(--light-x) * 0.34), calc(var(--light-y) * 0.36), 0) rotate(-13deg);
+  }
+
+  .light-pane {
+    position: absolute;
+    width: clamp(110px, 14vw, 210px);
+    aspect-ratio: 1;
+    border: 1px solid rgb(255 255 255 / 0.76);
+    border-radius: 36px;
+    background: linear-gradient(145deg, rgb(255 255 255 / 0.31), rgb(201 224 255 / 0.06));
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.9),
+      0 35px 90px rgb(64 104 160 / 0.08);
+    backdrop-filter: blur(7px);
+    transition: transform 800ms cubic-bezier(0.2, 0.75, 0.25, 1);
+  }
+
+  .light-pane-one {
+    top: 19%;
+    right: -5%;
+    transform: translate3d(calc(var(--light-x) * -0.72), calc(var(--light-y) * -0.55), 0) rotate(18deg);
+  }
+
+  .light-pane-two {
+    bottom: 12%;
+    left: -4%;
+    width: clamp(90px, 11vw, 170px);
+    border-radius: 30px;
+    transform: translate3d(calc(var(--light-x) * 0.56), calc(var(--light-y) * 0.48), 0) rotate(-16deg);
+  }
+
+  .light-grid {
+    opacity: 0.38;
+    background-image:
+      linear-gradient(rgb(67 100 146 / 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(67 100 146 / 0.08) 1px, transparent 1px),
+      radial-gradient(circle, rgb(51 90 147 / 0.18) 0.7px, transparent 0.9px);
+    background-size: 64px 64px, 64px 64px, 16px 16px;
+    mask-image: radial-gradient(ellipse at 50% 40%, #000 4%, rgb(0 0 0 / 0.62) 42%, transparent 83%);
+    transform: translate3d(calc(var(--light-x) * 0.08), calc(var(--light-y) * 0.08), 0);
+  }
+
+  #light-geometry-canvas { z-index: 1; }
+
+  .light-pointer-glow {
+    z-index: 2;
+    opacity: 0;
+    background: radial-gradient(circle 190px at var(--pointer-x) var(--pointer-y), rgb(255 255 255 / 0.64), rgb(113 177 255 / 0.1) 36%, transparent 72%);
+    transition: opacity 350ms ease;
+  }
+
+  .light-background[data-pointer-active="true"] .light-pointer-glow { opacity: 0.78; }
+
+  .light-finish {
+    z-index: 3;
+    background:
+      linear-gradient(118deg, rgb(255 255 255 / 0.52), transparent 31%),
+      radial-gradient(ellipse at center, transparent 40%, rgb(235 243 253 / 0.34) 100%);
+  }
+
+  @media (max-width: 640px) {
+    .light-ribbon { width: 125vw; }
+    .light-orbit-one { width: 88vw; right: -34%; }
+    .light-orbit-two { width: 82vw; left: -40%; }
+    .light-pane { opacity: 0.58; }
+    .light-grid { opacity: 0.27; background-size: 54px 54px, 54px 54px, 18px 18px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .light-background,
+    .light-spectrum,
+    .light-ribbon,
+    .light-orbit,
+    .light-pane,
+    .light-pointer-glow { transition: none; }
+  }
+</style>
+
+<script is:inline>
+  function initLightGeometry() {
+    window.__bloomfolioLightCleanup?.();
+
+    const canvas = document.getElementById("light-geometry-canvas");
+    if (!(canvas instanceof HTMLCanvasElement)) return;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+
+    const scene = canvas.parentElement;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const pointer = { x: -1000, y: -1000, active: false, radius: 128 };
+    const palette = [
+      [70, 128, 203],
+      [76, 171, 159],
+      [132, 105, 210],
+    ];
+    let particles = [];
+    let frameId = 0;
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let lightTheme = document.documentElement.dataset.theme === "light";
+
+    function createParticle(randomizePosition = true) {
+      const depth = 0.45 + Math.random() * 0.75;
+      return {
+        x: randomizePosition ? Math.random() * width : -36,
+        y: Math.random() * height,
+        vx: (0.07 + Math.random() * 0.13) * depth,
+        vy: (-0.05 + Math.random() * 0.1) * depth,
+        size: (1.15 + Math.random() * 2.5) * depth,
+        alpha: 0.1 + Math.random() * 0.2,
+        phase: Math.random() * Math.PI * 2,
+        shape: Math.floor(Math.random() * 4),
+        rotation: Math.random() * Math.PI,
+        color: palette[Math.floor(Math.random() * palette.length)],
+        depth,
+      };
+    }
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const targetCount = reducedMotion.matches
+        ? 20
+        : Math.max(54, Math.min(104, Math.round(width / 14)));
+      particles = Array.from({ length: targetCount }, () => createParticle(true));
+    }
+
+    function drawConnections() {
+      const connectionCount = Math.min(particles.length, 76);
+      for (let i = 0; i < connectionCount; i += 1) {
+        const first = particles[i];
+        for (let j = i + 1; j < connectionCount; j += 1) {
+          const second = particles[j];
+          const dx = first.x - second.x;
+          const dy = first.y - second.y;
+          const distance = Math.hypot(dx, dy);
+          if (distance > 94) continue;
+          const opacity = (1 - distance / 94) * 0.055;
+          context.beginPath();
+          context.moveTo(first.x, first.y);
+          context.lineTo(second.x, second.y);
+          context.strokeStyle = `rgba(72, 119, 180, ${opacity})`;
+          context.lineWidth = 0.7;
+          context.stroke();
+        }
+      }
+    }
+
+    function drawParticle(particle, time) {
+      const pulse = 0.76 + Math.sin(time * 0.0011 + particle.phase) * 0.24;
+      const alpha = particle.alpha * pulse;
+      const [red, green, blue] = particle.color;
+      context.save();
+      context.translate(particle.x, particle.y);
+      context.rotate(particle.rotation);
+      context.lineWidth = 0.85;
+      context.strokeStyle = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+      context.fillStyle = `rgba(${red}, ${green}, ${blue}, ${alpha * 0.72})`;
+
+      if (particle.shape === 0) {
+        context.beginPath();
+        context.arc(0, 0, particle.size * 0.56, 0, Math.PI * 2);
+        context.fill();
+      } else if (particle.shape === 1) {
+        const side = particle.size * 1.45;
+        context.strokeRect(-side / 2, -side / 2, side, side);
+      } else if (particle.shape === 2) {
+        context.beginPath();
+        context.moveTo(-particle.size, 0);
+        context.lineTo(particle.size, 0);
+        context.moveTo(0, -particle.size);
+        context.lineTo(0, particle.size);
+        context.stroke();
+      } else {
+        context.beginPath();
+        context.moveTo(0, -particle.size);
+        context.lineTo(particle.size, 0);
+        context.lineTo(0, particle.size);
+        context.lineTo(-particle.size, 0);
+        context.closePath();
+        context.stroke();
+      }
+      context.restore();
+    }
+
+    function repelFromPointer(particle) {
+      if (!pointer.active || reducedMotion.matches) return;
+      const dx = particle.x - pointer.x;
+      const dy = particle.y - pointer.y;
+      const distance = Math.hypot(dx, dy);
+      if (distance <= 0.01 || distance >= pointer.radius) return;
+      const force = (pointer.radius - distance) / pointer.radius;
+      particle.x += (dx / distance) * force * 2.25;
+      particle.y += (dy / distance) * force * 2.25;
+    }
+
+    function animate(time = 0) {
+      frameId = window.requestAnimationFrame(animate);
+      context.clearRect(0, 0, width, height);
+      if (!lightTheme) return;
+
+      const motionScale = reducedMotion.matches ? 0.06 : 1;
+      drawConnections();
+      for (const particle of particles) {
+        particle.x += particle.vx * motionScale;
+        particle.y += (particle.vy + Math.sin(time * 0.00065 + particle.phase) * 0.036) * motionScale;
+        particle.rotation += 0.00055 * particle.depth * motionScale;
+        repelFromPointer(particle);
+
+        if (particle.x > width + 28 || particle.y < -32 || particle.y > height + 32) {
+          Object.assign(particle, createParticle(false));
+        }
+        drawParticle(particle, time);
+      }
+    }
+
+    function onPointerMove(event) {
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+      pointer.active = true;
+      scene?.setAttribute("data-pointer-active", "true");
+      scene?.style.setProperty("--pointer-x", `${event.clientX}px`);
+      scene?.style.setProperty("--pointer-y", `${event.clientY}px`);
+      if (!reducedMotion.matches) {
+        const normalizedX = event.clientX / Math.max(1, width) - 0.5;
+        const normalizedY = event.clientY / Math.max(1, height) - 0.5;
+        scene?.style.setProperty("--light-x", `${normalizedX * 28}px`);
+        scene?.style.setProperty("--light-y", `${normalizedY * 22}px`);
+      }
+    }
+
+    function onPointerLeave() {
+      pointer.active = false;
+      scene?.setAttribute("data-pointer-active", "false");
+      scene?.style.setProperty("--light-x", "0px");
+      scene?.style.setProperty("--light-y", "0px");
+    }
+
+    const themeObserver = new MutationObserver(() => {
+      lightTheme = document.documentElement.dataset.theme === "light";
+      if (!lightTheme) context.clearRect(0, 0, width, height);
+    });
+
+    resize();
+    animate();
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    window.addEventListener("resize", resize);
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    document.documentElement.addEventListener("pointerleave", onPointerLeave);
+
+    window.__bloomfolioLightCleanup = () => {
+      window.cancelAnimationFrame(frameId);
+      themeObserver.disconnect();
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("pointermove", onPointerMove);
+      document.documentElement.removeEventListener("pointerleave", onPointerLeave);
+      window.__bloomfolioLightCleanup = null;
+    };
+  }
+
+  initLightGeometry();
+  document.addEventListener("astro:page-load", initLightGeometry);
+  document.addEventListener("astro:before-swap", () => window.__bloomfolioLightCleanup?.());
+</script>

@@ -1,0 +1,11 @@
+name: Kada Yang
+title: M.S. Student in Quantum Science and Engineering
+description: >-
+  Researching quantum machine learning, automated quantum measurement and
+  control, quantum compilation, system learning, and tensor networks.
+avatar: '@assets/hero/avatar.png'
+location: Shenzhen, China
+socialLinks:
+  - url: mailto:12532263@mail.sustech.edu.cn
+    icon: Email
+    label: Email

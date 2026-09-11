@@ -1,0 +1,207 @@
+---
+import Layout from "./Layout.astro";
+import { Image } from "astro:assets";
+import { ArrowLeft, CalendarDays, FileQuestionMark, Maximize2, Medal } from "@lucide/astro";
+
+interface Props {
+  title: string;
+  titleZh: string;
+  award: string;
+  awardZh: string;
+  tier: "international" | "national" | "provincial" | "school";
+  startDate?: Date;
+  certificate?: any;
+  rotateCertificate?: boolean;
+  description?: string;
+  descriptionZh?: string;
+}
+
+const {
+  title, titleZh, award, awardZh, tier, startDate, certificate,
+  rotateCertificate = false, description, descriptionZh,
+} = Astro.props;
+
+const tierLabels = {
+  international: ["International Award", "国际级奖项"],
+  national: ["National Award", "国家级奖项"],
+  provincial: ["Provincial / Ministerial Award", "省部级奖项"],
+  school: ["University Award", "校级奖项"],
+};
+
+const formattedDate = startDate
+  ? {
+      en: startDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
+      zh: startDate.toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric" }),
+    }
+  : null;
+---
+
+<Layout title={`${title} - Award`} description={`${award} — ${title}`}>
+  <article class="mx-auto min-h-screen max-w-6xl px-4 pb-20 pt-28 sm:pt-32">
+    <a href="/#competition-awards" class="btn btn-ghost btn-sm mb-7 gap-2">
+      <ArrowLeft class="size-4" />
+      <span class="lang-en">Back to Competition Awards</span>
+      <span class="lang-zh">返回竞赛获奖</span>
+    </a>
+
+    <header class={`award-header award-header--${tier} card mb-8 overflow-hidden bg-base-100 shadow-2xl`}>
+      <div class="card-body p-6 sm:p-9">
+        <div class="mb-5 flex flex-wrap items-center gap-3">
+          <span class={`tier-badge tier-badge--${tier}`}>
+            <Medal class="size-4" />
+            <span class="lang-en">{tierLabels[tier][0]}</span>
+            <span class="lang-zh">{tierLabels[tier][1]}</span>
+          </span>
+          {formattedDate && (
+            <span class="flex items-center gap-2 text-sm text-base-content/60">
+              <CalendarDays class="size-4" />
+              <span class="lang-en">{formattedDate.en}</span>
+              <span class="lang-zh">{formattedDate.zh}</span>
+            </span>
+          )}
+        </div>
+        <h1 class="text-3xl font-black leading-tight sm:text-5xl">
+          <span class="lang-en">{title}</span>
+          <span class="lang-zh">{titleZh}</span>
+        </h1>
+        <p class={`award-name award-name--${tier} mt-4 text-xl font-extrabold sm:text-2xl`}>
+          <span class="lang-en">{award}</span>
+          <span class="lang-zh">{awardZh}</span>
+        </p>
+        {(description || descriptionZh) && (
+          <p class="mt-5 max-w-3xl text-base leading-relaxed text-base-content/70 sm:text-lg">
+            {description && <span class="lang-en">{description}</span>}
+            {descriptionZh && <span class="lang-zh">{descriptionZh}</span>}
+          </p>
+        )}
+      </div>
+    </header>
+
+    <section class="certificate-shell card bg-base-100 shadow-2xl">
+      <div class="card-body p-4 sm:p-7">
+        <div class="mb-4 flex items-center justify-between gap-3">
+          <h2 class="text-xl font-bold sm:text-2xl">
+            <span class="lang-en">Award Certificate</span>
+            <span class="lang-zh">获奖证书</span>
+          </h2>
+          {certificate && (
+            <a href={certificate.src} target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline gap-2">
+              <Maximize2 class="size-4" />
+              <span class="lang-en">View Original</span>
+              <span class="lang-zh">查看原图</span>
+            </a>
+          )}
+        </div>
+
+        {certificate ? (
+          <a
+            href={certificate.src}
+            target="_blank"
+            rel="noopener noreferrer"
+            class:list={["certificate-frame", { "certificate-frame--rotated": rotateCertificate }]}
+            aria-label={`Open original certificate for ${title}`}
+          >
+            <Image src={certificate} alt={`${title} — ${award}`} class="certificate-image" />
+          </a>
+        ) : (
+          <div class="certificate-empty">
+            <FileQuestionMark class="size-16 text-base-content/30" />
+            <p class="mt-4 text-xl font-bold">
+              <span class="lang-en">Certificate not yet provided</span>
+              <span class="lang-zh">证书暂未提供</span>
+            </p>
+            <p class="mt-2 text-center text-base-content/60">
+              <span class="lang-en">This award is listed now and the certificate can be added later.</span>
+              <span class="lang-zh">该奖项已保留展示位置，后续可随时补充证书。</span>
+            </p>
+          </div>
+        )}
+      </div>
+    </section>
+  </article>
+</Layout>
+
+<style>
+  .award-header {
+    --award-accent: #d4a017;
+    border: 1px solid color-mix(in oklab, var(--award-accent) 38%, transparent);
+    border-top: 5px solid var(--award-accent);
+  }
+  .award-header--international { --award-accent: #a855f7; }
+  .award-header--national { --award-accent: #d4a017; }
+  .award-header--provincial { --award-accent: #9aa7b8; }
+  .award-header--school { --award-accent: #b87333; }
+
+  .tier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid color-mix(in oklab, var(--award-accent) 40%, transparent);
+    border-radius: 9999px;
+    padding: 0.42rem 0.8rem;
+    background: color-mix(in oklab, var(--award-accent) 12%, transparent);
+    color: var(--award-accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+  }
+  .tier-badge--international { --award-accent: #a855f7; }
+  .tier-badge--national { --award-accent: #c69214; }
+  .tier-badge--provincial { --award-accent: #7e8da2; }
+  .tier-badge--school { --award-accent: #a76633; }
+
+  .award-name--international {
+    width: fit-content;
+    background: linear-gradient(90deg, #ff477e, #ffb703, #19b5fe, #9b5de5);
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
+  .award-name--national { color: #c69214; }
+  .award-name--provincial { color: #7e8da2; }
+  .award-name--school { color: #a76633; }
+  :global(html[data-theme="dark"]) .award-name--national { color: #f2c94c; }
+  :global(html[data-theme="dark"]) .award-name--provincial { color: #c3cfdf; }
+  :global(html[data-theme="dark"]) .award-name--school { color: #d59862; }
+
+  .certificate-shell { border: 1px solid color-mix(in oklab, var(--color-base-content) 12%, transparent); }
+  .certificate-frame {
+    display: grid;
+    min-height: 22rem;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 1rem;
+    background: linear-gradient(45deg, rgb(0 0 0 / 0.035) 25%, transparent 25%), #fff;
+    background-size: 24px 24px;
+    padding: 1rem;
+    cursor: zoom-in;
+  }
+  .certificate-image {
+    display: block;
+    width: 100%;
+    max-height: 78vh;
+    object-fit: contain;
+    filter: drop-shadow(0 18px 28px rgb(0 0 0 / 0.16));
+  }
+  .certificate-frame--rotated { aspect-ratio: 1.42; }
+  .certificate-frame--rotated .certificate-image {
+    width: auto;
+    height: 70%;
+    max-height: none;
+    transform: rotate(90deg) scale(1.4);
+  }
+  .certificate-empty {
+    display: grid;
+    min-height: 28rem;
+    place-items: center;
+    align-content: center;
+    border: 2px dashed color-mix(in oklab, var(--color-base-content) 20%, transparent);
+    border-radius: 1rem;
+    background: color-mix(in oklab, var(--color-base-200) 70%, transparent);
+    padding: 2rem;
+  }
+  @media (max-width: 640px) {
+    .certificate-frame { min-height: 16rem; padding: 0.5rem; }
+    .certificate-empty { min-height: 20rem; }
+  }
+</style>

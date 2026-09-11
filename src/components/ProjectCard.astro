@@ -1,0 +1,112 @@
+---
+import { Image } from "astro:assets";
+import SkillBadge from "./SkillBadge.astro";
+import { Atom, ExternalLink, Eye } from "@lucide/astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  categoryLabel?: string;
+}
+
+const { project, categoryLabel } = Astro.props;
+
+function formatPeriod(startDate?: Date, endDate?: Date) {
+  if (!startDate) return null;
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    year: "numeric",
+  };
+  const start = startDate.toLocaleDateString("en-US", options);
+  const end = endDate
+    ? endDate.toLocaleDateString("en-US", options)
+    : "Present";
+  return `${start} - ${end}`;
+}
+---
+
+<article class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
+  <a
+    class="hover:opacity-80 transition-opacity"
+    href={`/projects/${project.id}`}
+  >
+    <figure class="aspect-video">
+      {
+        project.data.image ? (
+          <Image
+            src={project.data.image}
+            alt={project.data.title}
+            class="w-full h-full object-contain bg-white p-4"
+          />
+        ) : (
+          <div class="relative flex h-full w-full items-center justify-center overflow-hidden bg-gradient-to-br from-primary via-secondary to-accent text-primary-content">
+            <div class="absolute inset-0 opacity-20 quantum-grid"></div>
+            <Atom class="relative size-20 drop-shadow-lg" stroke-width={1.4} />
+          </div>
+        )
+      }
+    </figure>
+  </a>
+  <div class="card-body">
+    <h3 class="card-title hover:text-primary transition-colors">
+      <a href={`/projects/${project.id}`}>{project.data.title}</a>
+    </h3>
+    <div class="flex items-center gap-2 flex-wrap">
+      {project.data.startDate && (
+        <time class="text-sm text-base-content/60">
+          {formatPeriod(project.data.startDate, project.data.endDate)}
+        </time>
+      )}
+      {categoryLabel && (
+        <span class="badge badge-outline badge-sm">{categoryLabel}</span>
+      )}
+    </div>
+    <p class="text-base-content/80">{project.data.description}</p>
+    <div class="flex flex-wrap gap-2 mt-2">
+      {project.data.skills.map((skill) => <SkillBadge skill={skill} />)}
+    </div>
+    <div class="card-actions justify-end mt-4 gap-2">
+      {
+        project.data.demoLink && (
+          <a
+            href={project.data.demoLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-sm btn-soft gap-1"
+          >
+            <ExternalLink class="size-4" />
+            Demo
+          </a>
+        )
+      }
+      {
+        project.data.sourceLink && (
+          <a
+            href={project.data.sourceLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-sm btn-soft gap-1"
+          >
+            <ExternalLink class="size-4" />
+            Source
+          </a>
+        )
+      }
+      <div class="tooltip" data-tip="View project details">
+        <a href={`/projects/${project.id}`} class="btn btn-sm btn-primary">
+          <Eye class="size-4" />
+        </a>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .quantum-grid {
+    background-image:
+      radial-gradient(circle at 25% 25%, currentColor 0 2px, transparent 3px),
+      radial-gradient(circle at 75% 70%, currentColor 0 2px, transparent 3px),
+      linear-gradient(35deg, transparent 48%, currentColor 49% 51%, transparent 52%);
+    background-size: 44px 44px, 58px 58px, 72px 72px;
+  }
+</style>
