@@ -1,10 +1,9 @@
 name: Kada Yang
-title: M.S. Student in Quantum Science and Engineering
+title: M.S. Student in Quantum Science and Engineering · B.Eng. in Artificial Intelligence
 description: >-
-  Researching quantum machine learning, automated quantum measurement and
-  control, quantum compilation, system learning, and tensor networks.
+  AI for Quantum, Quantum for AI, quantum compilation algorithm design,
+  quantum representation learning, and automated quantum measurement and control.
 avatar: '@assets/hero/avatar.png'
-location: Shenzhen, China
 socialLinks:
   - url: mailto:12532263@mail.sustech.edu.cn
     icon: Email

@@ -116,6 +116,27 @@ const projects = defineCollection({
     }),
 });
 
+// Personal portfolio projects collection
+const portfolioProjects = defineCollection({
+  loader: glob({
+    pattern: "**/*.{md,mdoc,yaml}",
+    base: "./src/content/portfolioProjects",
+  }),
+  schema: ({ image }) =>
+    z.object({
+      sortOrder: z.number().optional().default(999),
+      title: z.string(),
+      description: z.string(),
+      image: image().optional(),
+      startDate: z.coerce.date().optional(),
+      endDate: z.coerce.date().optional(),
+      skills: z.array(z.string()),
+      demoLink: z.url().optional(),
+      sourceLink: z.url().optional(),
+      contentSidebar: contentSidebarSchema,
+    }),
+});
+
 // Hackathons collection
 const hackathons = defineCollection({
   loader: glob({
@@ -234,6 +255,7 @@ export const collections = {
   education,
   projectCategories,
   projects,
+  portfolioProjects,
   hackathons,
   blog,
   about,

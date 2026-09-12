@@ -1,51 +1,355 @@
 ---
 import { getCollection } from "astro:content";
+import { ArrowLeft, ArrowRight } from "@lucide/astro";
 import ProjectCard from "./ProjectCard.astro";
 
 const projectEntries = await getCollection("projects");
 
-// Filter featured projects, then keep the editorial publication order.
+// Keep the quantum-magic article out of the homepage while allowing the
+// carousel to grow automatically as more featured articles are added.
 const featuredProjects = projectEntries
-  .filter((project) => project.data.featured === true)
+  .filter(
+    (project) =>
+      project.data.featured === true &&
+      project.id !== "machine-learning-prediction-of-quantum-magic",
+  )
   .sort(
     (a, b) =>
       (a.data.sortOrder ?? 999) - (b.data.sortOrder ?? 999) ||
       (b.data.startDate?.getTime() ?? 0) -
         (a.data.startDate?.getTime() ?? 0),
-  )
-  .slice(0, 3);
+  );
+
+const carouselProjects =
+  featuredProjects.length > 1
+    ? [
+        {
+          project: featuredProjects[featuredProjects.length - 1],
+          originalIndex: featuredProjects.length - 1,
+          clone: true,
+        },
+        ...featuredProjects.map((project, originalIndex) => ({
+          project,
+          originalIndex,
+          clone: false,
+        })),
+        {
+          project: featuredProjects[0],
+          originalIndex: 0,
+          clone: true,
+        },
+      ]
+    : featuredProjects.map((project, originalIndex) => ({
+        project,
+        originalIndex,
+        clone: false,
+      }));
 ---
 
-<section id="latest-articles" class="py-20 px-4 bg-base-200">
-  <div class="max-w-6xl mx-auto">
-    <div class="text-center mb-12">
-      <h2 class="text-4xl font-bold mb-4">Latest Articles</h2>
+<section id="latest-articles" class="overflow-hidden bg-base-200 py-20">
+  <div class="mx-auto max-w-6xl px-4">
+    <div class="mb-12 text-center">
+      <h2 class="mb-4 text-4xl font-bold">Latest Articles</h2>
       <p class="text-lg text-base-content/70">
         Recent research papers spanning quantum compilation, quantum measurement,
         machine learning, and tensor networks.
       </p>
     </div>
+  </div>
 
-    {
-      featuredProjects.length === 0 ? (
-        <div class="text-center py-12">
-          <p class="text-lg text-base-content/60">
-            Research entries are being prepared. Check back soon.
-          </p>
+  {
+    featuredProjects.length === 0 ? (
+      <div class="mx-auto max-w-6xl px-4 py-12 text-center">
+        <p class="text-lg text-base-content/60">
+          Research entries are being prepared. Check back soon.
+        </p>
+      </div>
+    ) : (
+      <div
+        class="article-carousel"
+        data-article-carousel
+        data-project-count={featuredProjects.length}
+        aria-roledescription="carousel"
+        aria-label="Latest Articles"
+      >
+        <div class="carousel-viewport" data-carousel-viewport>
+          <div class="carousel-track" data-carousel-track>
+            {carouselProjects.map(({ project, originalIndex, clone }, index) => (
+              <div
+                class:list={["carousel-slide", { "is-active": index === (featuredProjects.length > 1 ? 1 : 0) }]}
+                data-carousel-slide
+                data-original-index={originalIndex}
+                data-clone={clone ? "true" : "false"}
+                aria-hidden={clone ? "true" : undefined}
+              >
+                <ProjectCard project={project} />
+              </div>
+            ))}
+          </div>
         </div>
-      ) : (
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredProjects.map((project) => (
-            <ProjectCard project={project} />
-          ))}
-        </div>
-      )
-    }
 
-    <div class="text-center mt-10">
-      <a href="/projects" class="btn btn-primary btn-outline">
-        View All Articles
-      </a>
-    </div>
+        {featuredProjects.length > 1 && (
+          <div class="carousel-controls" aria-label="Article carousel controls">
+            <button
+              type="button"
+              class="btn btn-circle btn-ghost"
+              data-carousel-prev
+              aria-label="Previous article"
+            >
+              <ArrowLeft class="size-5" />
+            </button>
+            <span class="min-w-14 text-center text-sm text-base-content/60" data-carousel-status>
+              1 / {featuredProjects.length}
+            </span>
+            <button
+              type="button"
+              class="btn btn-circle btn-ghost"
+              data-carousel-next
+              aria-label="Next article"
+            >
+              <ArrowRight class="size-5" />
+            </button>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  <div class="mt-8 text-center">
+    <a href="/projects" class="btn btn-primary btn-outline">
+      View All Articles
+    </a>
   </div>
 </section>
+
+<style>
+  .carousel-viewport {
+    overflow: hidden;
+    padding-block: 1rem 1.5rem;
+  }
+
+  .carousel-track {
+    display: flex;
+    align-items: stretch;
+    gap: 1rem;
+    will-change: transform;
+    transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .carousel-slide {
+    flex: 0 0 82%;
+    cursor: pointer;
+    opacity: 0.42;
+    transform: scale(0.9);
+    transition:
+      opacity 520ms ease,
+      transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 520ms ease;
+    filter: saturate(0.7);
+  }
+
+  .carousel-slide.is-active {
+    cursor: auto;
+    opacity: 1;
+    transform: scale(1);
+    filter: none;
+  }
+
+  .article-carousel.is-resetting .carousel-track,
+  .article-carousel.is-resetting .carousel-slide {
+    transition: none !important;
+  }
+
+  .carousel-slide :global(.card) {
+    height: 100%;
+  }
+
+  .carousel-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  @media (min-width: 48rem) {
+    .carousel-track {
+      gap: 1.5rem;
+    }
+
+    .carousel-slide {
+      flex-basis: 64%;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .carousel-slide {
+      flex-basis: 58%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .carousel-track,
+    .carousel-slide {
+      transition-duration: 1ms;
+    }
+  }
+</style>
+
+<script>
+  function setupArticleCarousels() {
+    window.__bloomfolioArticleCarouselCleanup?.();
+
+    const cleanups: Array<() => void> = [];
+
+    document.querySelectorAll<HTMLElement>("[data-article-carousel]").forEach((root) => {
+      const projectCount = Number(root.dataset.projectCount || "0");
+      if (projectCount < 2) return;
+
+      const viewport = root.querySelector<HTMLElement>("[data-carousel-viewport]");
+      const track = root.querySelector<HTMLElement>("[data-carousel-track]");
+      const slides = Array.from(root.querySelectorAll<HTMLElement>("[data-carousel-slide]"));
+      const previousButton = root.querySelector<HTMLButtonElement>("[data-carousel-prev]");
+      const nextButton = root.querySelector<HTMLButtonElement>("[data-carousel-next]");
+      const status = root.querySelector<HTMLElement>("[data-carousel-status]");
+      if (!viewport || !track || slides.length === 0) return;
+
+      let activeIndex = 1;
+      let transitioning = false;
+      let transitionTimer: number | undefined;
+      let resizeFrame: number | undefined;
+      let resetFrame: number | undefined;
+      let resetReleaseFrame: number | undefined;
+
+      const cancelResetFrames = () => {
+        if (resetFrame !== undefined) {
+          window.cancelAnimationFrame(resetFrame);
+          resetFrame = undefined;
+        }
+        if (resetReleaseFrame !== undefined) {
+          window.cancelAnimationFrame(resetReleaseFrame);
+          resetReleaseFrame = undefined;
+        }
+      };
+
+      const updateSlides = () => {
+        slides.forEach((slide, index) => {
+          const isActive = index === activeIndex;
+          slide.classList.toggle("is-active", isActive);
+          slide.setAttribute("aria-current", isActive ? "true" : "false");
+        });
+
+        if (status) {
+          const originalIndex = Number(slides[activeIndex]?.dataset.originalIndex || "0");
+          status.textContent = `${originalIndex + 1} / ${projectCount}`;
+        }
+      };
+
+      const positionTrack = (animate: boolean) => {
+        const activeSlide = slides[activeIndex];
+        if (!activeSlide) return;
+
+        cancelResetFrames();
+        if (animate) {
+          root.classList.remove("is-resetting");
+        } else {
+          root.classList.add("is-resetting");
+          void track.offsetWidth;
+        }
+
+        const offset =
+          viewport.clientWidth / 2 -
+          (activeSlide.offsetLeft + activeSlide.offsetWidth / 2);
+        track.style.transform = `translate3d(${offset}px, 0, 0)`;
+        updateSlides();
+
+        if (!animate) {
+          void track.offsetWidth;
+          resetFrame = window.requestAnimationFrame(() => {
+            resetReleaseFrame = window.requestAnimationFrame(() => {
+              root.classList.remove("is-resetting");
+              resetFrame = undefined;
+              resetReleaseFrame = undefined;
+            });
+          });
+        }
+      };
+
+      const finishTransition = () => {
+        if (!transitioning) return;
+        if (transitionTimer !== undefined) window.clearTimeout(transitionTimer);
+
+        if (activeIndex === 0) {
+          activeIndex = projectCount;
+          positionTrack(false);
+        } else if (activeIndex === projectCount + 1) {
+          activeIndex = 1;
+          positionTrack(false);
+        }
+
+        transitioning = false;
+      };
+
+      const move = (direction: -1 | 1) => {
+        if (transitioning) return;
+        transitioning = true;
+        activeIndex += direction;
+        positionTrack(true);
+        transitionTimer = window.setTimeout(finishTransition, 580);
+      };
+
+      const onTransitionEnd = (event: TransitionEvent) => {
+        if (event.target === track && event.propertyName === "transform") {
+          finishTransition();
+        }
+      };
+
+      const slideCleanups = slides.map((slide, index) => {
+        const onClick = (event: MouseEvent) => {
+          if (index === activeIndex) return;
+          event.preventDefault();
+          event.stopPropagation();
+          move(index < activeIndex ? -1 : 1);
+        };
+        slide.addEventListener("click", onClick, true);
+        return () => slide.removeEventListener("click", onClick, true);
+      });
+
+      const onPrevious = () => move(-1);
+      const onNext = () => move(1);
+      const onResize = () => {
+        if (resizeFrame !== undefined) window.cancelAnimationFrame(resizeFrame);
+        resizeFrame = window.requestAnimationFrame(() => positionTrack(false));
+      };
+
+      track.addEventListener("transitionend", onTransitionEnd);
+      previousButton?.addEventListener("click", onPrevious);
+      nextButton?.addEventListener("click", onNext);
+      window.addEventListener("resize", onResize);
+      window.requestAnimationFrame(() => positionTrack(false));
+
+      cleanups.push(() => {
+        if (transitionTimer !== undefined) window.clearTimeout(transitionTimer);
+        if (resizeFrame !== undefined) window.cancelAnimationFrame(resizeFrame);
+        cancelResetFrames();
+        root.classList.remove("is-resetting");
+        track.removeEventListener("transitionend", onTransitionEnd);
+        previousButton?.removeEventListener("click", onPrevious);
+        nextButton?.removeEventListener("click", onNext);
+        window.removeEventListener("resize", onResize);
+        slideCleanups.forEach((cleanup) => cleanup());
+      });
+    });
+
+    window.__bloomfolioArticleCarouselCleanup = () => {
+      cleanups.forEach((cleanup) => cleanup());
+      window.__bloomfolioArticleCarouselCleanup = null;
+    };
+  }
+
+  setupArticleCarousels();
+  document.addEventListener("astro:page-load", setupArticleCarousels);
+  document.addEventListener("astro:before-swap", () =>
+    window.__bloomfolioArticleCarouselCleanup?.(),
+  );
+</script>

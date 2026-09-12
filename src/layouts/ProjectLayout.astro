@@ -18,6 +18,10 @@ interface Props {
   sourceLink?: string;
   headings: MarkdownHeading[];
   contentSidebar: ResolvedContentSidebar;
+  backHref?: string;
+  backLabel?: string;
+  allHref?: string;
+  allLabel?: string;
 }
 
 const {
@@ -31,6 +35,10 @@ const {
   sourceLink,
   headings,
   contentSidebar,
+  backHref = "/projects",
+  backLabel = "Back to Projects",
+  allHref = "/projects",
+  allLabel = "View All Projects",
 } = Astro.props;
 const outlineHeadings = headings.filter(
   (heading) => heading.depth >= 1 && heading.depth <= 3
@@ -75,7 +83,7 @@ function calculateDuration(startDate?: Date, endDate?: Date) {
     <div class="mx-auto max-w-4xl">
       <!-- Back button -->
       <div class="mb-8">
-        <a href="/projects" class="btn btn-ghost btn-sm">
+        <a href={backHref} class="btn btn-ghost btn-sm">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"
@@ -89,7 +97,7 @@ function calculateDuration(startDate?: Date, endDate?: Date) {
         >
           <path d="m15 18-6-6 6-6"></path>
         </svg>
-          Back to Projects
+          {backLabel}
         </a>
       </div>
 
@@ -205,7 +213,7 @@ function calculateDuration(startDate?: Date, endDate?: Date) {
         <div class="divider mt-12"></div>
 
         <div class="mt-8 text-center">
-          <a href="/projects" class="btn btn-primary"> View All Projects </a>
+          <a href={allHref} class="btn btn-primary"> {allLabel} </a>
         </div>
       </div>
     </div>

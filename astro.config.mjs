@@ -5,7 +5,8 @@ import react from "@astrojs/react";
 import markdoc from "@astrojs/markdoc";
 import keystatic from "@keystatic/astro";
 
-const isDevelopment = process.argv.includes("dev");
+const isDevelopment =
+  /** @type {any} */ (globalThis).process?.argv?.includes("dev") ?? false;
 
 // https://astro.build/config
 export default defineConfig({

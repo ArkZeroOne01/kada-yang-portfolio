@@ -139,8 +139,13 @@ const navItems = [
 <script>
   function setupIslandNavigation() {
     const links = Array.from(document.querySelectorAll<HTMLAnchorElement>(".island-link"));
+    const getLinkHash = (link: HTMLAnchorElement) =>
+      new URL(link.getAttribute("href") || "", window.location.href).hash;
     const sections = links
-      .map((link) => document.querySelector<HTMLElement>(link.getAttribute("href") || ""))
+      .map((link) => {
+        const hash = getLinkHash(link);
+        return hash ? document.getElementById(hash.slice(1)) : null;
+      })
       .filter((section): section is HTMLElement => Boolean(section));
 
     if (!links.length || !sections.length) return;
@@ -149,7 +154,7 @@ const navItems = [
     const setActive = (id: string) => {
       let activeLink: HTMLAnchorElement | undefined;
       links.forEach((link) => {
-        const active = link.getAttribute("href") === `#${id}`;
+        const active = getLinkHash(link) === `#${id}`;
         if (active) {
           link.setAttribute("aria-current", "page");
           activeLink = link;

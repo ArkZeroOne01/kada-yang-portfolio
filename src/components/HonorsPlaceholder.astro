@@ -1,16 +1,57 @@
+---
+import { Image } from "astro:assets";
+import nationalScholarship from "../assets/honors/national-scholarship.png";
+import innovationAdvancedIndividual from "../assets/honors/innovation-advanced-individual.png";
+import comprehensiveScholarship from "../assets/honors/comprehensive-scholarship.png";
+import excellentLeagueMember from "../assets/honors/excellent-league-member.png";
+import scienceInnovationAdvancedIndividual from "../assets/honors/science-innovation-advanced-individual.png";
+
+const honors = [
+  {
+    image: nationalScholarship,
+    alt: "National Scholarship certificate",
+  },
+  {
+    image: innovationAdvancedIndividual,
+    alt: "Innovation capability advanced individual certificate",
+  },
+  {
+    image: comprehensiveScholarship,
+    alt: "Comprehensive development scholarship certificate",
+  },
+  {
+    image: excellentLeagueMember,
+    alt: "Excellent Communist Youth League member certificate",
+  },
+  {
+    image: scienceInnovationAdvancedIndividual,
+    alt: "Science and innovation advanced individual certificate",
+  },
+];
+---
+
 <section id="honors" class="py-20 px-4 bg-base-300">
-  <div class="max-w-4xl mx-auto">
+  <div class="max-w-6xl mx-auto">
     <div class="text-center mb-12">
       <h2 class="text-4xl font-bold mb-4">Honors</h2>
       <p class="text-lg text-base-content/70">
-        This section is reserved for future honors and distinctions.
+        Selected Honors
       </p>
     </div>
 
-    <div class="card border border-dashed border-base-content/20 bg-base-100/70 shadow-sm backdrop-blur">
-      <div class="card-body min-h-40 items-center justify-center text-center">
-        <p class="text-lg text-base-content/60">More honors will be added here.</p>
-      </div>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        honors.map((honor) => (
+          <figure class="aspect-[3/2] overflow-hidden rounded-2xl border border-base-content/10 bg-base-100 p-3 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+            <Image
+              src={honor.image}
+              alt={honor.alt}
+              class="h-full w-full object-contain"
+              loading="lazy"
+            />
+          </figure>
+        ))
+      }
     </div>
   </div>
 </section>

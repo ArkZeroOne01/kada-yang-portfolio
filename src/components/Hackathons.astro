@@ -35,14 +35,14 @@ const sortedAwards = awardEntries.sort((a, b) => {
               </div>
             </div>
             <div
-              class={`timeline-${index % 2 === 0 ? "start" : "end"} w-full max-w-sm pb-8 ${index % 2 === 0 ? "pe-4 text-end" : "ps-4 text-start"}`}
+              class={`timeline-${index % 2 === 0 ? "start" : "end"} min-w-0 w-full max-w-sm pb-8 ${index % 2 === 0 ? "pe-4 text-end" : "ps-4 text-start"}`}
             >
               <a
                 href={`/awards/${entry.id}`}
-                class={`award-card award-card--${entry.data.tier} group card bg-base-100 text-start shadow-xl`}
+                class={`award-card award-card--${entry.data.tier} group card min-w-0 bg-base-100 text-start shadow-xl`}
                 aria-label={`Open certificate for ${entry.data.title}`}
               >
-                <div class="card-body relative p-5 sm:p-6">
+                <div class="card-body relative min-w-0 p-4 sm:p-6">
                   <div class="absolute end-4 top-4 flex items-center gap-2 text-base-content/45">
                     {entry.data.certificate ? (
                       <FileCheck class="size-4" aria-label="Certificate available" />
@@ -51,11 +51,11 @@ const sortedAwards = awardEntries.sort((a, b) => {
                     )}
                     <ChevronRight class="size-4 transition-transform group-hover:translate-x-1" />
                   </div>
-                  <h3 class="pe-14 text-lg font-bold leading-snug">
+                  <h3 class="break-words pe-12 text-lg font-bold leading-snug [overflow-wrap:anywhere] sm:pe-14">
                     <span class="lang-en">{entry.data.title}</span>
                     <span class="lang-zh">{entry.data.titleZh}</span>
                   </h3>
-                  <p class={`award-text award-text--${entry.data.tier} mt-2 text-base font-extrabold`}>
+                  <p class={`award-text award-text--${entry.data.tier} mt-2 max-w-full break-words text-base font-extrabold [overflow-wrap:anywhere]`}>
                     <span class="lang-en">{entry.data.award}</span>
                     <span class="lang-zh">{entry.data.awardZh}</span>
                   </p>
@@ -129,18 +129,57 @@ const sortedAwards = awardEntries.sort((a, b) => {
 
   @keyframes international-shimmer { to { background-position: 240% center; } }
 
-  @media (max-width: 639px) {
-    .timeline.timeline-vertical > li { grid-template-columns: 2.25rem minmax(0, 1fr); }
-    .timeline.timeline-vertical > li > .timeline-middle { grid-column: 1; }
+  @media (max-width: 767px) {
+    .timeline.timeline-vertical {
+      width: 100%;
+    }
+
+    .timeline.timeline-vertical > li {
+      position: relative;
+      display: grid;
+      min-width: 0;
+      grid-template-columns: 2rem minmax(0, 1fr);
+      grid-template-rows: auto;
+      align-items: start;
+    }
+
+    .timeline.timeline-vertical > li > .timeline-middle {
+      z-index: 1;
+      grid-column: 1;
+      grid-row: 1;
+      align-self: start;
+      justify-self: center;
+      padding-top: 0.35rem;
+    }
+
     .timeline.timeline-vertical > li > .timeline-start,
     .timeline.timeline-vertical > li > .timeline-end {
       grid-column: 2;
       grid-row: 1;
+      min-width: 0;
       max-width: none;
-      padding-inline: 0.75rem 0;
+      padding: 0 0 1.25rem 0.75rem;
       text-align: start;
     }
-    .timeline.timeline-vertical > li > hr { grid-column: 1; }
+
+    .timeline.timeline-vertical > li > hr {
+      display: none;
+    }
+
+    .timeline.timeline-vertical > li:not(:last-child)::after {
+      position: absolute;
+      top: 2rem;
+      bottom: 0;
+      left: calc(1rem - 1px);
+      width: 2px;
+      background: color-mix(in oklab, var(--color-primary) 45%, transparent);
+      content: "";
+    }
+
+    .award-marker {
+      width: 2rem;
+      height: 2rem;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

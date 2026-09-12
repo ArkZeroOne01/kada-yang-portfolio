@@ -28,12 +28,12 @@ const heroGreetingZh = hero.name === "Kada Yang" ? "你好，我是杨卡达" : 
   <div class="hero-content flex-col lg:flex-row-reverse max-w-7xl">
     <div class="hover-3d">
       <!-- content -->
-      <figure class="max-w-100 w-48 lg:w-64 mask mask-squircle">
+      <figure class="hero-avatar-frame max-w-100 w-48 lg:w-64 mask mask-squircle">
         {
           typeof hero.avatar === "string" ? (
-            <img src={hero.avatar} alt={hero.name} />
+            <img class="hero-avatar-image" src={hero.avatar} alt={hero.name} />
           ) : (
-            <Image src={hero.avatar} alt={hero.name} />
+            <Image class="hero-avatar-image" src={hero.avatar} alt={hero.name} />
           )
         }
       </figure>
@@ -95,6 +95,18 @@ const heroGreetingZh = hero.name === "Kada Yang" ? "你好，我是杨卡达" : 
 </section>
 
 <style>
+  .hero-avatar-frame {
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  .hero-avatar-frame :global(.hero-avatar-image) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+
   .typing-caret {
     display: inline-block;
     width: 0.075em;

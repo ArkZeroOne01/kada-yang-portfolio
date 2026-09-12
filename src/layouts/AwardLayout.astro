@@ -45,7 +45,7 @@ const formattedDate = startDate
     </a>
 
     <header class={`award-header award-header--${tier} card mb-8 overflow-hidden bg-base-100 shadow-2xl`}>
-      <div class="card-body p-6 sm:p-9">
+      <div class="card-body min-w-0 p-5 sm:p-9">
         <div class="mb-5 flex flex-wrap items-center gap-3">
           <span class={`tier-badge tier-badge--${tier}`}>
             <Medal class="size-4" />
@@ -60,11 +60,11 @@ const formattedDate = startDate
             </span>
           )}
         </div>
-        <h1 class="text-3xl font-black leading-tight sm:text-5xl">
+        <h1 class="break-words text-2xl font-black leading-tight [overflow-wrap:anywhere] sm:text-5xl">
           <span class="lang-en">{title}</span>
           <span class="lang-zh">{titleZh}</span>
         </h1>
-        <p class={`award-name award-name--${tier} mt-4 text-xl font-extrabold sm:text-2xl`}>
+        <p class={`award-name award-name--${tier} mt-4 max-w-full break-words text-xl font-extrabold [overflow-wrap:anywhere] sm:text-2xl`}>
           <span class="lang-en">{award}</span>
           <span class="lang-zh">{awardZh}</span>
         </p>
@@ -79,7 +79,7 @@ const formattedDate = startDate
 
     <section class="certificate-shell card bg-base-100 shadow-2xl">
       <div class="card-body p-4 sm:p-7">
-        <div class="mb-4 flex items-center justify-between gap-3">
+        <div class="mb-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h2 class="text-xl font-bold sm:text-2xl">
             <span class="lang-en">Award Certificate</span>
             <span class="lang-zh">获奖证书</span>
@@ -144,6 +144,8 @@ const formattedDate = startDate
     font-size: 0.78rem;
     font-weight: 800;
     letter-spacing: 0.03em;
+    max-width: 100%;
+    flex-wrap: wrap;
   }
   .tier-badge--international { --award-accent: #a855f7; }
   .tier-badge--national { --award-accent: #c69214; }

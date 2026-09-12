@@ -5,11 +5,13 @@ import { Atom, ExternalLink, Eye } from "@lucide/astro";
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
-  project: CollectionEntry<"projects">;
+  project: CollectionEntry<"projects"> | CollectionEntry<"portfolioProjects">;
   categoryLabel?: string;
+  hrefBase?: string;
 }
 
-const { project, categoryLabel } = Astro.props;
+const { project, categoryLabel, hrefBase = "/projects" } = Astro.props;
+const projectHref = `${hrefBase}/${project.id}`;
 
 function formatPeriod(startDate?: Date, endDate?: Date) {
   if (!startDate) return null;
@@ -28,7 +30,7 @@ function formatPeriod(startDate?: Date, endDate?: Date) {
 <article class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
   <a
     class="hover:opacity-80 transition-opacity"
-    href={`/projects/${project.id}`}
+    href={projectHref}
   >
     <figure class="aspect-video">
       {
@@ -49,7 +51,7 @@ function formatPeriod(startDate?: Date, endDate?: Date) {
   </a>
   <div class="card-body">
     <h3 class="card-title hover:text-primary transition-colors">
-      <a href={`/projects/${project.id}`}>{project.data.title}</a>
+      <a href={projectHref}>{project.data.title}</a>
     </h3>
     <div class="flex items-center gap-2 flex-wrap">
       {project.data.startDate && (
@@ -93,7 +95,7 @@ function formatPeriod(startDate?: Date, endDate?: Date) {
         )
       }
       <div class="tooltip" data-tip="View project details">
-        <a href={`/projects/${project.id}`} class="btn btn-sm btn-primary">
+        <a href={projectHref} class="btn btn-sm btn-primary">
           <Eye class="size-4" />
         </a>
       </div>

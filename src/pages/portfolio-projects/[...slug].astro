@@ -9,7 +9,7 @@ import ProjectLayout from "../../layouts/ProjectLayout.astro";
 import { resolveContentSidebar } from "../../utils/contentSidebar";
 
 export async function getStaticPaths() {
-  const entries = await getCollection("projects");
+  const entries = await getCollection("portfolioProjects");
 
   return entries.map((entry) => ({
     params: { slug: entry.id.replace(/\.(md|mdx)$/, "") },
@@ -18,15 +18,16 @@ export async function getStaticPaths() {
 }
 
 interface Props {
-  entry: CollectionEntry<"projects">;
+  entry: CollectionEntry<"portfolioProjects">;
 }
 
 const { entry } = Astro.props;
+
 const { Content, headings } = await render(entry);
 const generalEntry = await getEntry("general", "index");
 const contentSidebar = resolveContentSidebar(
   generalEntry?.data,
-  entry.data.contentSidebar
+  entry.data.contentSidebar,
 );
 ---
 
@@ -41,10 +42,10 @@ const contentSidebar = resolveContentSidebar(
   sourceLink={entry.data.sourceLink}
   headings={headings}
   contentSidebar={contentSidebar}
-  backHref="/projects"
-  backLabel="Back to Articles"
-  allHref="/projects"
-  allLabel="View All Articles"
+  backHref="/portfolio-projects"
+  backLabel="Back to Portfolio Projects"
+  allHref="/portfolio-projects"
+  allLabel="View All Projects"
 >
   <Content />
 </ProjectLayout>
