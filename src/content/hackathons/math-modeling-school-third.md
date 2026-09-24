@@ -8,5 +8,5 @@ awardOrder: 3
 sortOrder: 20
 startDate: 2022-05-04
 certificate: '@assets/awards/math-modeling-2022-school-third.jpg'
-rotateCertificate: true
+certificateRotation: counterclockwise
 ---

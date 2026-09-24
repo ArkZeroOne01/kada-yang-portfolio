@@ -10,15 +10,17 @@ interface Props {
   awardZh: string;
   tier: "international" | "national" | "provincial" | "school";
   startDate?: Date;
+  datePrecision?: "day" | "month";
   certificate?: any;
   rotateCertificate?: boolean;
+  certificateRotation?: "clockwise" | "counterclockwise";
   description?: string;
   descriptionZh?: string;
 }
 
 const {
-  title, titleZh, award, awardZh, tier, startDate, certificate,
-  rotateCertificate = false, description, descriptionZh,
+  title, titleZh, award, awardZh, tier, startDate, datePrecision = "day", certificate,
+  rotateCertificate = false, certificateRotation, description, descriptionZh,
 } = Astro.props;
 
 const tierLabels = {
@@ -30,10 +32,25 @@ const tierLabels = {
 
 const formattedDate = startDate
   ? {
-      en: startDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }),
-      zh: startDate.toLocaleDateString("zh-CN", { year: "numeric", month: "long", day: "numeric" }),
+      en: startDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        ...(datePrecision === "day" ? { day: "numeric" } : {}),
+      }),
+      zh: startDate.toLocaleDateString("zh-CN", {
+        year: "numeric",
+        month: "long",
+        ...(datePrecision === "day" ? { day: "numeric" } : {}),
+      }),
     }
   : null;
+
+const certificateIsRotated = Boolean(rotateCertificate || certificateRotation);
+const certificateRatio = certificate
+  ? certificateIsRotated
+    ? certificate.height / certificate.width
+    : certificate.width / certificate.height
+  : 1;
 ---
 
 <Layout title={`${title} - Award`} description={`${award} — ${title}`}>
@@ -98,10 +115,18 @@ const formattedDate = startDate
             href={certificate.src}
             target="_blank"
             rel="noopener noreferrer"
-            class:list={["certificate-frame", { "certificate-frame--rotated": rotateCertificate }]}
+            class:list={[
+              "certificate-frame",
+              {
+                "certificate-frame--rotated": rotateCertificate || certificateRotation,
+                "certificate-frame--rotated-counterclockwise": certificateRotation === "counterclockwise",
+              },
+            ]}
             aria-label={`Open original certificate for ${title}`}
           >
-            <Image src={certificate} alt={`${title} — ${award}`} class="certificate-image" />
+            <span class="certificate-stage" style={`--certificate-ratio: ${certificateRatio};`}>
+              <Image src={certificate} alt={`${title} — ${award}`} class="certificate-image" />
+            </span>
           </a>
         ) : (
           <div class="certificate-empty">
@@ -178,19 +203,34 @@ const formattedDate = startDate
     padding: 1rem;
     cursor: zoom-in;
   }
+  .certificate-stage {
+    position: relative;
+    display: block;
+    width: min(100%, calc(78vh * var(--certificate-ratio)));
+    aspect-ratio: var(--certificate-ratio);
+  }
   .certificate-image {
+    position: absolute;
+    inset: 0;
     display: block;
     width: 100%;
-    max-height: 78vh;
+    height: 100%;
     object-fit: contain;
     filter: drop-shadow(0 18px 28px rgb(0 0 0 / 0.16));
   }
-  .certificate-frame--rotated { aspect-ratio: 1.42; }
   .certificate-frame--rotated .certificate-image {
-    width: auto;
-    height: 70%;
+    inset: auto;
+    left: 50%;
+    top: 50%;
+    width: calc(100% / var(--certificate-ratio));
+    height: auto;
     max-height: none;
-    transform: rotate(90deg) scale(1.4);
+    max-width: none;
+    transform: translate(-50%, -50%) rotate(90deg);
+    transform-origin: center;
+  }
+  .certificate-frame--rotated-counterclockwise .certificate-image {
+    transform: translate(-50%, -50%) rotate(-90deg);
   }
   .certificate-empty {
     display: grid;

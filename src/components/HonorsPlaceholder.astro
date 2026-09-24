@@ -5,27 +5,89 @@ import innovationAdvancedIndividual from "../assets/honors/innovation-advanced-i
 import comprehensiveScholarship from "../assets/honors/comprehensive-scholarship.png";
 import excellentLeagueMember from "../assets/honors/excellent-league-member.png";
 import scienceInnovationAdvancedIndividual from "../assets/honors/science-innovation-advanced-individual.png";
+import outstandingUndergraduateGraduate2025 from "../assets/honors/outstanding-undergraduate-graduate-2025.jpg";
+import scienceInnovationAdvanced20232024 from "../assets/honors/science-innovation-advanced-2023-2024.jpg";
+import threeGoodStudent20232024 from "../assets/honors/three-good-student-2023-2024.jpg";
+import scienceInnovationAdvanced20222023 from "../assets/honors/science-innovation-advanced-2022-2023.jpg";
+import threeGoodStudent20222023 from "../assets/honors/three-good-student-2022-2023.jpg";
+import daoqiao78Scholarship20222023 from "../assets/honors/daoqiao-78-scholarship-2022-2023.jpg";
+import excellentVolunteer2024 from "../assets/honors/excellent-volunteer-2024.jpg";
+import firstClassScholarship20232024 from "../assets/honors/first-class-scholarship-2023-2024.jpg";
+import innovationEntrepreneurshipOrganizer2023 from "../assets/honors/innovation-entrepreneurship-organizer-2023.jpg";
+import innovationEntrepreneurshipAdvanced2023 from "../assets/honors/innovation-entrepreneurship-advanced-2023.jpg";
 
-const honors = [
+const honors: Array<{
+  image: any;
+  alt: string;
+  rotation?: "counterclockwise";
+}> = [
   {
     image: nationalScholarship,
     alt: "National Scholarship certificate",
   },
   {
     image: innovationAdvancedIndividual,
-    alt: "Innovation capability advanced individual certificate",
+    alt: "2023 Chongqing Innovation Capability Improvement Advanced Individual certificate",
+  },
+  {
+    image: outstandingUndergraduateGraduate2025,
+    alt: "2025 Outstanding Undergraduate Graduate certificate",
+    rotation: "counterclockwise",
+  },
+  {
+    image: firstClassScholarship20232024,
+    alt: "2023–2024 First-Class Undergraduate Scholarship certificate",
+    rotation: "counterclockwise",
+  },
+  {
+    image: daoqiao78Scholarship20222023,
+    alt: "2022–2023 Daoqiao Class of 1978 Outstanding Student Scholarship certificate",
+    rotation: "counterclockwise",
+  },
+  {
+    image: threeGoodStudent20232024,
+    alt: "2023–2024 Three-Good Student certificate",
+    rotation: "counterclockwise",
+  },
+  {
+    image: threeGoodStudent20222023,
+    alt: "2022–2023 Three-Good Student certificate",
+    rotation: "counterclockwise",
   },
   {
     image: comprehensiveScholarship,
-    alt: "Comprehensive development scholarship certificate",
+    alt: "2021–2022 Three-Good Student certificate",
   },
   {
     image: excellentLeagueMember,
-    alt: "Excellent Communist Youth League member certificate",
+    alt: "2022–2023 Excellent Communist Youth League Member certificate",
+  },
+  {
+    image: scienceInnovationAdvanced20232024,
+    alt: "2023–2024 Science and Technology Innovation Advanced Individual certificate",
+    rotation: "counterclockwise",
+  },
+  {
+    image: scienceInnovationAdvanced20222023,
+    alt: "2022–2023 Science and Technology Innovation Advanced Individual certificate",
+    rotation: "counterclockwise",
   },
   {
     image: scienceInnovationAdvancedIndividual,
-    alt: "Science and innovation advanced individual certificate",
+    alt: "2021–2022 Science and Technology Innovation Advanced Individual certificate",
+  },
+  {
+    image: excellentVolunteer2024,
+    alt: "2024 Excellent Volunteer certificate",
+    rotation: "counterclockwise",
+  },
+  {
+    image: innovationEntrepreneurshipOrganizer2023,
+    alt: "2023 Innovation and Entrepreneurship Outstanding Organizer certificate",
+  },
+  {
+    image: innovationEntrepreneurshipAdvanced2023,
+    alt: "2023 Innovation and Entrepreneurship Advanced Individual certificate",
   },
 ];
 ---
@@ -42,16 +104,46 @@ const honors = [
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
         honors.map((honor) => (
-          <figure class="aspect-[3/2] overflow-hidden rounded-2xl border border-base-content/10 bg-base-100 p-3 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-            <Image
-              src={honor.image}
-              alt={honor.alt}
-              class="h-full w-full object-contain"
-              loading="lazy"
-            />
+          <figure class="honor-card aspect-[3/2] overflow-hidden rounded-2xl border border-base-content/10 bg-base-100 p-3 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+            <span class="honor-stage">
+              <Image
+                src={honor.image}
+                alt={honor.alt}
+                class:list={["honor-image", { "honor-image--counterclockwise": honor.rotation === "counterclockwise" }]}
+                loading="lazy"
+              />
+            </span>
           </figure>
         ))
       }
     </div>
   </div>
 </section>
+
+<style>
+  .honor-stage {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .honor-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .honor-image--counterclockwise {
+    inset: auto;
+    left: 50%;
+    top: 50%;
+    width: 64%;
+    height: auto;
+    max-width: none;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    transform-origin: center;
+  }
+</style>

@@ -6,5 +6,8 @@ awardZh: 校级三等奖
 tier: school
 awardOrder: 3
 sortOrder: 10
-certificate: '@assets/awards/cqjtu-programming-8-third.jpg'
+startDate: 2021-12-01
+datePrecision: month
+certificate: '@assets/awards/cqjtu-programming-8-third-2021.jpg'
+certificateRotation: counterclockwise
 ---

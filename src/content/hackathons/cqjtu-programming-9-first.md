@@ -6,4 +6,8 @@ awardZh: 校级一等奖
 tier: school
 awardOrder: 1
 sortOrder: 20
+startDate: 2023-04-01
+datePrecision: month
+certificate: '@assets/awards/cqjtu-programming-9-first-2023.jpg'
+certificateRotation: counterclockwise
 ---

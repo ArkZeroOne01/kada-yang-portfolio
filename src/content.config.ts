@@ -156,10 +156,12 @@ const hackathons = defineCollection({
       description: z.string().optional(),
       descriptionZh: z.string().optional(),
       startDate: z.coerce.date().optional(),
+      datePrecision: z.enum(["day", "month"]).optional().default("day"),
       endDate: z.coerce.date().optional(),
       logo: image().optional(),
       certificate: image().optional(),
       rotateCertificate: z.boolean().optional().default(false),
+      certificateRotation: z.enum(["clockwise", "counterclockwise"]).optional(),
       sourceLink: z.url().optional(),
     }),
 });

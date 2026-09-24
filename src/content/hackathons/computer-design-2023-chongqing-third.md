@@ -7,5 +7,5 @@ tier: provincial
 awardOrder: 3
 sortOrder: 10
 certificate: '@assets/awards/computer-design-2023-chongqing-third.jpeg'
-rotateCertificate: true
+certificateRotation: counterclockwise
 ---
